@@ -9,8 +9,8 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-start gap-8">
           <div className="space-y-4 max-w-sm">
             <Link to="/" className="flex items-center gap-2">
-              <span className="text-2xl font-bold bg-gradient-to-r from-pinkyWhite to-aragon bg-clip-text text-transparent">
-                SocialCard
+              <span className="text-2xl font-bold bg-gradient-to-r from-hunter to-green bg-clip-text text-transparent">
+                CardCraft
               </span>
             </Link>
             <p className="text-muted-foreground">
@@ -19,35 +19,35 @@ export function Footer() {
             <div className="flex space-x-4">
               <a 
                 href="#" 
-                className="text-foreground/70 hover:text-aragon transition-colors"
+                className="text-foreground/70 hover:text-green dark:hover:text-hunter transition-colors"
                 aria-label="Facebook"
               >
                 <Facebook size={20} />
               </a>
               <a 
                 href="#" 
-                className="text-foreground/70 hover:text-aragon transition-colors"
+                className="text-foreground/70 hover:text-green dark:hover:text-hunter transition-colors"
                 aria-label="Twitter"
               >
                 <Twitter size={20} />
               </a>
               <a 
                 href="#" 
-                className="text-foreground/70 hover:text-aragon transition-colors"
+                className="text-foreground/70 hover:text-green dark:hover:text-hunter transition-colors"
                 aria-label="Instagram"
               >
                 <Instagram size={20} />
               </a>
               <a 
                 href="#" 
-                className="text-foreground/70 hover:text-aragon transition-colors"
+                className="text-foreground/70 hover:text-green dark:hover:text-hunter transition-colors"
                 aria-label="LinkedIn"
               >
                 <Linkedin size={20} />
               </a>
               <a 
                 href="#" 
-                className="text-foreground/70 hover:text-aragon transition-colors"
+                className="text-foreground/70 hover:text-green dark:hover:text-hunter transition-colors"
                 aria-label="GitHub"
               >
                 <Github size={20} />
@@ -59,6 +59,11 @@ export function Footer() {
             <div className="space-y-4">
               <h3 className="font-bold text-lg">Product</h3>
               <ul className="space-y-2">
+                <li>
+                  <Link to="/product" className="text-muted-foreground hover:text-foreground transition-colors">
+                    Overview
+                  </Link>
+                </li>
                 <li>
                   <Link to="/features" className="text-muted-foreground hover:text-foreground transition-colors">
                     Features
@@ -122,7 +127,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-6 border-t border-border text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} SocialCard. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} CardCraft. All rights reserved.</p>
         </div>
       </div>
     </footer>

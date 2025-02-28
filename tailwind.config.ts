@@ -63,8 +63,8 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				pinkyWhite: "#928DAB",
-				aragon: "#7303C0"
+				hunter: "#fffcfc",
+				green: "#14281D"
 			},
 			fontFamily: {
 				'syne': ['Syne', 'sans-serif'],
