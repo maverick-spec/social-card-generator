@@ -31,7 +31,7 @@ export function Header() {
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
-          <span className="text-2xl font-bold bg-gradient-to-r from-hunter to-green bg-clip-text text-transparent">
+          <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
             CardCraft
           </span>
         </Link>
@@ -169,7 +169,7 @@ export function Header() {
               onClick={() => toggleDropdown("mobileProduct")}
             >
               <span className={cn(
-                (isActive("/product") || isActive("/features")) && "text-green dark:text-hunter font-medium"
+                (isActive("/product") || isActive("/features")) && "text-primary font-medium"
               )}>
                 Product
               </span>
@@ -208,7 +208,7 @@ export function Header() {
           
           <Link 
             to="/templates" 
-            className={cn("py-2", isActive("/templates") && "text-green dark:text-hunter font-medium")}
+            className={cn("py-2", isActive("/templates") && "text-primary font-medium")}
             onClick={() => setIsOpen(false)}
           >
             Templates
@@ -216,7 +216,7 @@ export function Header() {
           
           <Link 
             to="/pricing" 
-            className={cn("py-2", isActive("/pricing") && "text-green dark:text-hunter font-medium")}
+            className={cn("py-2", isActive("/pricing") && "text-primary font-medium")}
             onClick={() => setIsOpen(false)}
           >
             Pricing
@@ -229,7 +229,7 @@ export function Header() {
               onClick={() => toggleDropdown("mobileResources")}
             >
               <span className={cn(
-                (isActive("/resources") || isActive("/blog") || isActive("/guides") || isActive("/help")) && "text-green dark:text-hunter font-medium"
+                (isActive("/resources") || isActive("/blog") || isActive("/guides") || isActive("/help")) && "text-primary font-medium"
               )}>
                 Resources
               </span>
@@ -283,7 +283,7 @@ export function Header() {
               onClick={() => toggleDropdown("mobileCompany")}
             >
               <span className={cn(
-                (isActive("/about") || isActive("/contact") || isActive("/privacy")) && "text-green dark:text-hunter font-medium"
+                (isActive("/about") || isActive("/contact") || isActive("/privacy")) && "text-primary font-medium"
               )}>
                 Company
               </span>

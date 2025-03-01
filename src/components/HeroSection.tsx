@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 export function HeroSection() {
   return (
     <section className="relative pt-32 pb-20 overflow-hidden animated-bg">
-      <div className="absolute top-0 left-0 right-0 h-full bg-gradient-to-b from-hunter/5 to-green/5 pointer-events-none"></div>
+      <div className="absolute top-0 left-0 right-0 h-full bg-gradient-to-b from-background/5 to-background/5 pointer-events-none"></div>
       
       <div className="container mx-auto px-4">
         <motion.div 
@@ -22,17 +22,16 @@ export function HeroSection() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.3 }}
           >
-            ✨ Create your digital identity
+            ✨ Transform Your Professional Identity
           </motion.div>
           
           <motion.h1 
-            className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight bg-gradient-to-r from-hunter to-green bg-clip-text text-transparent"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
-            Connect. Share. Impress.<br />
-            Your Digital Business Card
+            Elevate Your Network Presence with <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">CardCraft</span>
           </motion.h1>
           
           <motion.p 
@@ -41,7 +40,7 @@ export function HeroSection() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
           >
-            Create stunning digital social cards in seconds. Showcase your professional identity and connect with your network seamlessly.
+            Create stunning digital business cards that make a lasting impression. Share your professional identity seamlessly across platforms and stand out in your industry.
           </motion.p>
           
           <motion.div 
@@ -50,13 +49,22 @@ export function HeroSection() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.5 }}
           >
-            <Button asChild className="btn-primary min-w-[160px]">
-              <Link to="/create">Get Started</Link>
+            <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 min-w-[160px]">
+              <Link to="/create">Create Your Card</Link>
             </Button>
-            <Button asChild className="btn-secondary min-w-[160px]">
-              <Link to="/templates">Try Templates</Link>
+            <Button asChild variant="outline" size="lg" className="min-w-[160px]">
+              <Link to="/templates">Explore Templates</Link>
             </Button>
           </motion.div>
+          
+          <motion.p
+            className="text-sm text-muted-foreground pt-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.5 }}
+          >
+            Join thousands of professionals enhancing their digital presence
+          </motion.p>
         </motion.div>
         
         <motion.div 
@@ -65,11 +73,11 @@ export function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.6 }}
         >
-          <div className="aspect-video relative rounded-lg overflow-hidden shadow-inner bg-gradient-to-br from-hunter/20 to-green/20">
+          <div className="aspect-video relative rounded-lg overflow-hidden shadow-inner bg-gradient-to-br from-primary/10 to-primary/5">
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center px-6">
-                <p className="text-xl font-semibold text-foreground/80">Your social card preview will appear here</p>
-                <p className="text-sm text-muted-foreground mt-2">Click "Get Started" to create your own</p>
+                <p className="text-xl font-semibold text-foreground/80">Your professionally crafted digital card</p>
+                <p className="text-sm text-muted-foreground mt-2">Click "Create Your Card" to get started</p>
               </div>
             </div>
           </div>

@@ -9,45 +9,45 @@ export function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-start gap-8">
           <div className="space-y-4 max-w-sm">
             <Link to="/" className="flex items-center gap-2">
-              <span className="text-2xl font-bold bg-gradient-to-r from-hunter to-green bg-clip-text text-transparent">
+              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
                 CardCraft
               </span>
             </Link>
             <p className="text-muted-foreground">
-              Create beautiful, shareable digital business cards in seconds. Connect with your network professionally with our custom social cards.
+              Revolutionize your professional networking with CardCraft's digital business cards. Make meaningful connections and leave a lasting impression with our customizable, shareable cards.
             </p>
             <div className="flex space-x-4">
               <a 
                 href="#" 
-                className="text-foreground/70 hover:text-green dark:hover:text-hunter transition-colors"
+                className="text-foreground/70 hover:text-primary transition-colors"
                 aria-label="Facebook"
               >
                 <Facebook size={20} />
               </a>
               <a 
                 href="#" 
-                className="text-foreground/70 hover:text-green dark:hover:text-hunter transition-colors"
+                className="text-foreground/70 hover:text-primary transition-colors"
                 aria-label="Twitter"
               >
                 <Twitter size={20} />
               </a>
               <a 
                 href="#" 
-                className="text-foreground/70 hover:text-green dark:hover:text-hunter transition-colors"
+                className="text-foreground/70 hover:text-primary transition-colors"
                 aria-label="Instagram"
               >
                 <Instagram size={20} />
               </a>
               <a 
                 href="#" 
-                className="text-foreground/70 hover:text-green dark:hover:text-hunter transition-colors"
+                className="text-foreground/70 hover:text-primary transition-colors"
                 aria-label="LinkedIn"
               >
                 <Linkedin size={20} />
               </a>
               <a 
                 href="#" 
-                className="text-foreground/70 hover:text-green dark:hover:text-hunter transition-colors"
+                className="text-foreground/70 hover:text-primary transition-colors"
                 aria-label="GitHub"
               >
                 <Github size={20} />
