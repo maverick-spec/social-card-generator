@@ -52,7 +52,7 @@ export function HeroSection() {
             transition={{ delay: 0.5, duration: 0.5 }}
           >
             <Button asChild variant="destructive" size="lg" className="min-w-[160px]">
-              <Link to={isAuthenticated ? "/create" : "/login"}>Create Your Card</Link>
+              <Link to={isAuthenticated ? "/login"}>Create Your Card</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="min-w-[160px]">
               <Link to="/templates">Explore Templates</Link>
