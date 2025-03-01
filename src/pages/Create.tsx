@@ -1,11 +1,14 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { SocialCardForm } from "@/components/SocialCardForm";
 import { SocialCardPreview } from "@/components/SocialCardPreview";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
+import { useAuth } from "@/context/AuthContext";
+import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
 
 // Default empty card data
 const defaultCardData = {
@@ -19,11 +22,31 @@ const defaultCardData = {
 };
 
 const Create = () => {
+  const { user } = useAuth();
   const [cardData, setCardData] = useState(defaultCardData);
   const [activeTab, setActiveTab] = useState("edit");
+  
+  // Pre-fill with user email if available
+  useEffect(() => {
+    if (user?.email) {
+      setCardData(prev => ({
+        ...prev,
+        email: user.email
+      }));
+    }
+  }, [user]);
 
   const handleDataUpdate = (data: typeof cardData) => {
     setCardData(data);
+  };
+
+  const handleSaveCard = () => {
+    // In a real app, this would save to a database
+    // For now, we'll just show a toast
+    toast({
+      title: "Card saved!",
+      description: "Your card has been saved successfully.",
+    });
   };
 
   return (
@@ -52,6 +75,9 @@ const Create = () => {
               </TabsList>
               <TabsContent value="edit" className="mt-6">
                 <SocialCardForm onUpdate={handleDataUpdate} />
+                <div className="mt-6 flex justify-center">
+                  <Button onClick={handleSaveCard}>Save Card</Button>
+                </div>
               </TabsContent>
               <TabsContent value="preview" className="mt-6">
                 <SocialCardPreview data={cardData} />
@@ -63,6 +89,9 @@ const Create = () => {
           <div className="hidden md:grid md:grid-cols-2 gap-10 max-w-6xl mx-auto">
             <div>
               <SocialCardForm onUpdate={handleDataUpdate} />
+              <div className="mt-6">
+                <Button onClick={handleSaveCard}>Save Card</Button>
+              </div>
             </div>
             <div>
               <SocialCardPreview data={cardData} />

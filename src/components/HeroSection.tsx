@@ -2,8 +2,11 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { useAuth } from "@/context/AuthContext";
 
 export function HeroSection() {
+  const { isAuthenticated } = useAuth();
+  
   return (
     <section className="relative pt-32 pb-20 overflow-hidden animated-bg">
       <div className="absolute top-0 left-0 right-0 h-full bg-gradient-to-b from-background/5 to-background/5 pointer-events-none"></div>
@@ -30,7 +33,7 @@ export function HeroSection() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
-            Elevate Your Network Presence with <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">CardCraft</span>
+            Elevate Your Network Presence with <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">CardPro</span>
           </motion.h1>
           
           <motion.p 
@@ -49,7 +52,7 @@ export function HeroSection() {
             transition={{ delay: 0.5, duration: 0.5 }}
           >
             <Button asChild variant="destructive" size="lg" className="min-w-[160px]">
-              <Link to="/create">Create Your Card</Link>
+              <Link to={isAuthenticated ? "/create" : "/login"}>Create Your Card</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="min-w-[160px]">
               <Link to="/templates">Explore Templates</Link>

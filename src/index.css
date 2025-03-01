@@ -22,8 +22,8 @@
     --muted-foreground: 240 3.8% 46.1%;
     --accent: 240 4.8% 95.9%;
     --accent-foreground: 240 5.9% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 142.1 76.2% 36.3%;
+    --destructive-foreground: 355.7 100% 97.3%;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 142.1 76.2% 36.3%;
@@ -76,19 +76,19 @@
   }
   
   .btn-primary {
-    @apply bg-gradient-to-r from-hunter to-green text-white font-medium py-2 px-6 rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105;
+    @apply bg-gradient-to-r from-primary to-green text-white font-medium py-2 px-6 rounded-full shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105;
   }
   
   .btn-secondary {
-    @apply bg-white text-green font-medium py-2 px-6 rounded-full shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 hover:scale-105;
+    @apply bg-white text-primary font-medium py-2 px-6 rounded-full shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200 hover:scale-105;
   }
   
   .nav-link {
-    @apply relative py-2 px-3 text-gray-700 hover:text-green transition-colors duration-200;
+    @apply relative py-2 px-3 text-gray-700 hover:text-primary transition-colors duration-200;
   }
   
   .nav-link.active {
-    @apply text-green;
+    @apply text-primary;
   }
 }
 
