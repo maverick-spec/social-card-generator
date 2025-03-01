@@ -75,7 +75,7 @@ const Index = () => {
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold">Why Choose CardCraft?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold">Why Choose NexCard?</h2>
               <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
                 Our platform offers the perfect blend of professional features and ease of use
               </p>
@@ -130,7 +130,7 @@ const Index = () => {
                 Ready to Create Your Professional Digital Identity?
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-                Join thousands of professionals who are making meaningful connections with CardCraft's digital business cards.
+                Join thousands of professionals who are making meaningful connections with NexCard's digital business cards.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <Button asChild className="btn-primary min-w-[180px]">
