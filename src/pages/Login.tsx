@@ -5,8 +5,6 @@ import { Link } from "react-router-dom";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/context/AuthContext";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -51,8 +49,10 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
-      <main className="flex-grow flex items-center justify-center pt-20 pb-20 animated-bg">
+      <main className="flex-grow flex items-center justify-center py-12 relative">
+        {/* Interactive Grid Background */}
+        <div className="absolute inset-0 -z-10 h-full w-full bg-white [background:radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        
         <div className="container max-w-md mx-auto px-4">
           <motion.div
             className="bg-white rounded-2xl shadow-xl p-8"
@@ -61,9 +61,9 @@ const Login = () => {
             transition={{ duration: 0.5 }}
           >
             <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
+              <h1 className="text-3xl font-bold mb-2 text-primary">NexCard</h1>
               <p className="text-muted-foreground">
-                Log in to access your CardPro dashboard
+                Log in to access your NexCard dashboard
               </p>
             </div>
 
@@ -116,6 +116,31 @@ const Login = () => {
                 >
                   {isLoading ? "Logging in..." : "Log in"}
                 </Button>
+                
+                <div className="relative my-4">
+                  <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t"></span>
+                  </div>
+                  <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-white px-2 text-muted-foreground">Or continue with</span>
+                  </div>
+                </div>
+                
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  className="w-full h-12"
+                >
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 488 512" 
+                    className="h-5 w-5 mr-2"
+                    fill="currentColor"
+                  >
+                    <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z" />
+                  </svg>
+                  Sign in with Google
+                </Button>
               </form>
             </Form>
 
@@ -137,7 +162,6 @@ const Login = () => {
           </motion.div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };

@@ -35,7 +35,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Check for existing session on mount
   useEffect(() => {
-    const storedUser = localStorage.getItem('cardpro_user');
+    const storedUser = localStorage.getItem('nexcard_user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
@@ -49,10 +49,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Demo login - accept test@example.com/password only
       if (email === 'test@example.com' && password === 'password') {
         setUser(DEMO_USER);
-        localStorage.setItem('cardpro_user', JSON.stringify(DEMO_USER));
+        localStorage.setItem('nexcard_user', JSON.stringify(DEMO_USER));
         toast({
           title: "Login successful",
-          description: "Welcome back to CardPro!",
+          description: "Welcome back to NexCard!",
         });
         navigate('/dashboard');
       } else {
@@ -73,7 +73,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Logout function
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('cardpro_user');
+    localStorage.removeItem('nexcard_user');
     toast({
       title: "Logged out",
       description: "You have been successfully logged out",
