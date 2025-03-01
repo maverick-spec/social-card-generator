@@ -1,5 +1,4 @@
 
-import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -49,7 +48,7 @@ export function HeroSection() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.5 }}
           >
-            <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 min-w-[160px]">
+            <Button asChild variant="destructive" size="lg" className="min-w-[160px]">
               <Link to="/create">Create Your Card</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="min-w-[160px]">

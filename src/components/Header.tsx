@@ -1,23 +1,15 @@
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const location = useLocation();
-  
-  const toggleDropdown = (name: string) => {
-    if (openDropdown === name) {
-      setOpenDropdown(null);
-    } else {
-      setOpenDropdown(name);
-    }
-  };
+  const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   
   const isActive = (path: string) => {
     if (path === "/") {
@@ -25,6 +17,18 @@ export function Header() {
     }
     return location.pathname.startsWith(path);
   };
+
+  const handleMouseEnter = (name: string) => {
+    setActiveDropdown(name);
+  };
+
+  const handleMouseLeave = () => {
+    setActiveDropdown(null);
+  };
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border transition-all duration-300">
@@ -39,35 +43,33 @@ export function Header() {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-6">
           {/* Product Dropdown */}
-          <div className="relative group">
+          <div 
+            className="relative group"
+            onMouseEnter={() => handleMouseEnter("product")}
+            onMouseLeave={handleMouseLeave}
+            ref={(el) => (dropdownRefs.current["product"] = el)}
+          >
             <button 
               className={cn(
                 "nav-link flex items-center gap-1",
                 (isActive("/product") || isActive("/features")) && "active"
               )}
-              onClick={() => toggleDropdown("product")}
             >
               Product
-              {openDropdown === "product" ? (
-                <ChevronUp className="w-4 h-4" />
-              ) : (
-                <ChevronDown className="w-4 h-4" />
-              )}
+              <ChevronDown className="w-4 h-4" />
             </button>
             
-            {openDropdown === "product" && (
-              <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-green/10 rounded-lg shadow-lg p-2 z-50">
+            {activeDropdown === "product" && (
+              <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg p-2 z-50">
                 <Link 
                   to="/product" 
-                  className="block px-4 py-2 rounded hover:bg-green/10 dark:hover:bg-hunter/10"
-                  onClick={() => setOpenDropdown(null)}
+                  className="block px-4 py-2 rounded hover:bg-green/10"
                 >
                   Overview
                 </Link>
                 <Link 
                   to="/features" 
-                  className="block px-4 py-2 rounded hover:bg-green/10 dark:hover:bg-hunter/10"
-                  onClick={() => setOpenDropdown(null)}
+                  className="block px-4 py-2 rounded hover:bg-green/10"
                 >
                   Features
                 </Link>
@@ -84,42 +86,39 @@ export function Header() {
           </Link>
           
           {/* Resources Dropdown */}
-          <div className="relative group">
+          <div 
+            className="relative group"
+            onMouseEnter={() => handleMouseEnter("resources")}
+            onMouseLeave={handleMouseLeave}
+            ref={(el) => (dropdownRefs.current["resources"] = el)}
+          >
             <button 
               className={cn(
                 "nav-link flex items-center gap-1",
                 (isActive("/resources") || isActive("/blog") || isActive("/guides") || isActive("/help")) && "active"
               )}
-              onClick={() => toggleDropdown("resources")}
             >
               Resources
-              {openDropdown === "resources" ? (
-                <ChevronUp className="w-4 h-4" />
-              ) : (
-                <ChevronDown className="w-4 h-4" />
-              )}
+              <ChevronDown className="w-4 h-4" />
             </button>
             
-            {openDropdown === "resources" && (
-              <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-green/10 rounded-lg shadow-lg p-2 z-50">
+            {activeDropdown === "resources" && (
+              <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg p-2 z-50">
                 <Link 
                   to="/blog" 
-                  className="block px-4 py-2 rounded hover:bg-green/10 dark:hover:bg-hunter/10"
-                  onClick={() => setOpenDropdown(null)}
+                  className="block px-4 py-2 rounded hover:bg-green/10"
                 >
                   Blog
                 </Link>
                 <Link 
                   to="/guides" 
-                  className="block px-4 py-2 rounded hover:bg-green/10 dark:hover:bg-hunter/10"
-                  onClick={() => setOpenDropdown(null)}
+                  className="block px-4 py-2 rounded hover:bg-green/10"
                 >
                   Guides
                 </Link>
                 <Link 
                   to="/help" 
-                  className="block px-4 py-2 rounded hover:bg-green/10 dark:hover:bg-hunter/10"
-                  onClick={() => setOpenDropdown(null)}
+                  className="block px-4 py-2 rounded hover:bg-green/10"
                 >
                   Help Center
                 </Link>
@@ -130,15 +129,13 @@ export function Header() {
 
         {/* Actions */}
         <div className="hidden md:flex items-center gap-4">
-          <ThemeToggle />
-          <Button asChild className="btn-primary">
+          <Button asChild variant="destructive">
             <Link to="/create">Get Started</Link>
           </Button>
         </div>
 
         {/* Mobile menu button */}
         <div className="flex items-center gap-2 md:hidden">
-          <ThemeToggle />
           <Button 
             variant="ghost" 
             size="icon" 
@@ -166,39 +163,29 @@ export function Header() {
           <div>
             <button 
               className="flex items-center justify-between w-full py-2"
-              onClick={() => toggleDropdown("mobileProduct")}
+              onClick={() => setActiveDropdown(activeDropdown === "mobileProduct" ? null : "mobileProduct")}
             >
               <span className={cn(
                 (isActive("/product") || isActive("/features")) && "text-primary font-medium"
               )}>
                 Product
               </span>
-              {openDropdown === "mobileProduct" ? (
-                <ChevronUp className="w-4 h-4" />
-              ) : (
-                <ChevronDown className="w-4 h-4" />
-              )}
+              <ChevronDown className="w-4 h-4" />
             </button>
             
-            {openDropdown === "mobileProduct" && (
+            {activeDropdown === "mobileProduct" && (
               <div className="pl-4 mt-2 space-y-2">
                 <Link 
                   to="/product" 
                   className="block py-2"
-                  onClick={() => {
-                    setIsOpen(false);
-                    setOpenDropdown(null);
-                  }}
+                  onClick={() => setIsOpen(false)}
                 >
                   Overview
                 </Link>
                 <Link 
                   to="/features" 
                   className="block py-2"
-                  onClick={() => {
-                    setIsOpen(false);
-                    setOpenDropdown(null);
-                  }}
+                  onClick={() => setIsOpen(false)}
                 >
                   Features
                 </Link>
@@ -226,49 +213,36 @@ export function Header() {
           <div>
             <button 
               className="flex items-center justify-between w-full py-2"
-              onClick={() => toggleDropdown("mobileResources")}
+              onClick={() => setActiveDropdown(activeDropdown === "mobileResources" ? null : "mobileResources")}
             >
               <span className={cn(
                 (isActive("/resources") || isActive("/blog") || isActive("/guides") || isActive("/help")) && "text-primary font-medium"
               )}>
                 Resources
               </span>
-              {openDropdown === "mobileResources" ? (
-                <ChevronUp className="w-4 h-4" />
-              ) : (
-                <ChevronDown className="w-4 h-4" />
-              )}
+              <ChevronDown className="w-4 h-4" />
             </button>
             
-            {openDropdown === "mobileResources" && (
+            {activeDropdown === "mobileResources" && (
               <div className="pl-4 mt-2 space-y-2">
                 <Link 
                   to="/blog" 
                   className="block py-2"
-                  onClick={() => {
-                    setIsOpen(false);
-                    setOpenDropdown(null);
-                  }}
+                  onClick={() => setIsOpen(false)}
                 >
                   Blog
                 </Link>
                 <Link 
                   to="/guides" 
                   className="block py-2"
-                  onClick={() => {
-                    setIsOpen(false);
-                    setOpenDropdown(null);
-                  }}
+                  onClick={() => setIsOpen(false)}
                 >
                   Guides
                 </Link>
                 <Link 
                   to="/help" 
                   className="block py-2"
-                  onClick={() => {
-                    setIsOpen(false);
-                    setOpenDropdown(null);
-                  }}
+                  onClick={() => setIsOpen(false)}
                 >
                   Help Center
                 </Link>
@@ -276,62 +250,8 @@ export function Header() {
             )}
           </div>
           
-          {/* Company Section */}
-          <div>
-            <button 
-              className="flex items-center justify-between w-full py-2"
-              onClick={() => toggleDropdown("mobileCompany")}
-            >
-              <span className={cn(
-                (isActive("/about") || isActive("/contact") || isActive("/privacy")) && "text-primary font-medium"
-              )}>
-                Company
-              </span>
-              {openDropdown === "mobileCompany" ? (
-                <ChevronUp className="w-4 h-4" />
-              ) : (
-                <ChevronDown className="w-4 h-4" />
-              )}
-            </button>
-            
-            {openDropdown === "mobileCompany" && (
-              <div className="pl-4 mt-2 space-y-2">
-                <Link 
-                  to="/about" 
-                  className="block py-2"
-                  onClick={() => {
-                    setIsOpen(false);
-                    setOpenDropdown(null);
-                  }}
-                >
-                  About
-                </Link>
-                <Link 
-                  to="/contact" 
-                  className="block py-2"
-                  onClick={() => {
-                    setIsOpen(false);
-                    setOpenDropdown(null);
-                  }}
-                >
-                  Contact
-                </Link>
-                <Link 
-                  to="/privacy" 
-                  className="block py-2"
-                  onClick={() => {
-                    setIsOpen(false);
-                    setOpenDropdown(null);
-                  }}
-                >
-                  Privacy
-                </Link>
-              </div>
-            )}
-          </div>
-          
-          <Button asChild className="btn-primary w-full mt-2">
-            <Link to="/create" onClick={() => setIsOpen(false)}>
+          <Button asChild variant="destructive" className="w-full mt-2">
+            <Link to="/create">
               Get Started
             </Link>
           </Button>
