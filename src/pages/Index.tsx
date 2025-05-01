@@ -1,6 +1,7 @@
 
 import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
+import { VideoSection } from "@/components/VideoSection";
 import { StepsSection } from "@/components/StepsSection";
 import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
@@ -14,6 +15,7 @@ const Index = () => {
       <Header />
       <main className="flex-grow">
         <HeroSection />
+        <VideoSection />
         <StepsSection />
         
         {/* Testimonials Section */}

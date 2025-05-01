@@ -1,15 +1,18 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, LogIn, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthContext";
+import { UserButton } from "@clerk/clerk-react";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const location = useLocation();
   const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const { isAuthenticated } = useAuth();
   
   const isActive = (path: string) => {
     if (path === "/") {
@@ -129,13 +132,20 @@ export function Header() {
 
         {/* Actions */}
         <div className="hidden md:flex items-center gap-4">
-          <Button asChild variant="destructive">
-            <Link to="/create">Get Started</Link>
-          </Button>
+          {isAuthenticated ? (
+            <UserButton afterSignOutUrl="/" />
+          ) : (
+            <Button asChild variant="destructive">
+              <Link to="/login">
+                <LogIn className="w-4 h-4 mr-2" /> Sign In
+              </Link>
+            </Button>
+          )}
         </div>
 
         {/* Mobile menu button */}
         <div className="flex items-center gap-2 md:hidden">
+          {isAuthenticated && <UserButton afterSignOutUrl="/" />}
           <Button 
             variant="ghost" 
             size="icon" 
@@ -250,11 +260,13 @@ export function Header() {
             )}
           </div>
           
-          <Button asChild variant="destructive" className="w-full mt-2">
-            <Link to="/create">
-              Get Started
-            </Link>
-          </Button>
+          {!isAuthenticated && (
+            <Button asChild variant="destructive" className="w-full mt-2">
+              <Link to="/login">
+                <LogIn className="w-4 h-4 mr-2" /> Sign In
+              </Link>
+            </Button>
+          )}
         </nav>
       </div>
     </header>

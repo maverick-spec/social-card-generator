@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
+import { Lanyard } from "@/components/Lanyard";
 
 export function HeroSection() {
   const { isAuthenticated } = useAuth();
@@ -13,20 +14,11 @@ export function HeroSection() {
       
       <div className="container mx-auto px-4">
         <motion.div 
-          className="max-w-4xl mx-auto text-center space-y-6"
+          className="max-w-4xl space-y-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <motion.div 
-            className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.3 }}
-          >
-            ✨ Transform Your Professional Identity
-          </motion.div>
-          
           <motion.h1 
             className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-foreground"
             initial={{ opacity: 0 }}
@@ -37,7 +29,7 @@ export function HeroSection() {
           </motion.h1>
           
           <motion.p 
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto"
+            className="text-lg md:text-xl text-muted-foreground max-w-2xl"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
@@ -46,7 +38,7 @@ export function HeroSection() {
           </motion.p>
           
           <motion.div 
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6"
+            className="flex flex-col sm:flex-row items-start gap-4 pt-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5, duration: 0.5 }}
@@ -68,22 +60,10 @@ export function HeroSection() {
             Join thousands of professionals enhancing their digital presence
           </motion.p>
         </motion.div>
-        
-        <motion.div 
-          className="max-w-4xl mx-auto mt-16 p-6 glass-card rounded-2xl shadow-xl"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.6 }}
-        >
-          <div className="aspect-video relative rounded-lg overflow-hidden shadow-inner bg-gradient-to-br from-primary/10 to-primary/5">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center px-6">
-                <p className="text-xl font-semibold text-foreground">Your professionally crafted digital card</p>
-                <p className="text-sm text-muted-foreground mt-2">Click "Create Your Card" to get started</p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+
+        <div className="h-80 w-full mt-12">
+          <Lanyard />
+        </div>
       </div>
     </div>
   );
