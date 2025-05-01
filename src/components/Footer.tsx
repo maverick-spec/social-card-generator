@@ -5,7 +5,7 @@ import { Facebook, Twitter, Instagram, Linkedin, Github } from "lucide-react";
 export function Footer() {
   return (
     <>
-      <footer className="bg-muted/50 dark:bg-muted/20 border-t border-border py-12">
+      <footer className="bg-muted/50 dark:bg-muted/20 border-t border-border py-8 md:py-12">
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-start gap-8">
             <div className="space-y-4 max-w-sm">
@@ -56,7 +56,7 @@ export function Footer() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 w-full md:w-auto">
               <div className="space-y-4">
                 <h3 className="font-bold text-lg">Product</h3>
                 <ul className="space-y-2">
@@ -133,10 +133,10 @@ export function Footer() {
         </div>
       </footer>
       
-      {/* Large Brand Name Below Footer */}
-      <div className="bg-muted/20 py-8">
+      {/* Large Brand Name Below Footer - More Responsive */}
+      <div className="bg-muted/20 py-4 md:py-8 overflow-hidden">
         <div className="container mx-auto px-4 flex justify-center">
-          <h2 className="text-[150px] md:text-[200px] font-bold text-black/5 leading-none">
+          <h2 className="brand-name-large">
             NexCard
           </h2>
         </div>
