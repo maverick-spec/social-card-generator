@@ -8,7 +8,7 @@ export function HeroSection() {
   const { isAuthenticated } = useAuth();
   
   return (
-    <section className="relative pt-32 pb-20 overflow-hidden animated-bg">
+    <div className="relative pt-32 pb-20 overflow-hidden animated-bg">
       <div className="absolute top-0 left-0 right-0 h-full bg-gradient-to-b from-background/5 to-background/5 pointer-events-none"></div>
       
       <div className="container mx-auto px-4">
@@ -28,12 +28,12 @@ export function HeroSection() {
           </motion.div>
           
           <motion.h1 
-            className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-foreground"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
           >
-            Elevate Your Network Presence with <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">CardPro</span>
+            Elevate Your Network Presence with <span className="bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">NexCard</span>
           </motion.h1>
           
           <motion.p 
@@ -52,7 +52,7 @@ export function HeroSection() {
             transition={{ delay: 0.5, duration: 0.5 }}
           >
             <Button asChild variant="destructive" size="lg" className="min-w-[160px]">
-              <Link to={isAuthenticated ? "/login"}>Create Your Card</Link>
+              <Link to={isAuthenticated ? "/create" : "/login"}>Create Your Card</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="min-w-[160px]">
               <Link to="/templates">Explore Templates</Link>
@@ -78,13 +78,13 @@ export function HeroSection() {
           <div className="aspect-video relative rounded-lg overflow-hidden shadow-inner bg-gradient-to-br from-primary/10 to-primary/5">
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center px-6">
-                <p className="text-xl font-semibold text-foreground/80">Your professionally crafted digital card</p>
+                <p className="text-xl font-semibold text-foreground">Your professionally crafted digital card</p>
                 <p className="text-sm text-muted-foreground mt-2">Click "Create Your Card" to get started</p>
               </div>
             </div>
           </div>
         </motion.div>
       </div>
-    </section>
+    </div>
   );
 }

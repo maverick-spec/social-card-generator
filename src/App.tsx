@@ -6,8 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { useEffect } from "react";
-import { AuthProvider } from "@/context/AuthContext";
-import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
 import Index from "./pages/Index";
 import Templates from "./pages/Templates";
 import Blog from "./pages/Blog";
@@ -38,10 +37,10 @@ const ScrollToTop = () => {
   return null;
 };
 
-// App Router Component with Auth Provider
+// App Router Component with Clerk Auth
 const AppRoutes = () => {
   return (
-    <AuthProvider>
+    <>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Index />} />
@@ -49,14 +48,24 @@ const AppRoutes = () => {
         <Route path="/blog" element={<Blog />} />
         <Route path="/login" element={<Login />} />
         <Route path="/create" element={
-          <ProtectedRoute>
-            <Create />
-          </ProtectedRoute>
+          <>
+            <SignedIn>
+              <Create />
+            </SignedIn>
+            <SignedOut>
+              <RedirectToSignIn />
+            </SignedOut>
+          </>
         } />
         <Route path="/dashboard" element={
-          <ProtectedRoute>
-            <Dashboard />
-          </ProtectedRoute>
+          <>
+            <SignedIn>
+              <Dashboard />
+            </SignedIn>
+            <SignedOut>
+              <RedirectToSignIn />
+            </SignedOut>
+          </>
         } />
         <Route path="/product" element={<Product />} />
         <Route path="/features" element={<Features />} />
@@ -69,7 +78,7 @@ const AppRoutes = () => {
         <Route path="/privacy" element={<Privacy />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </AuthProvider>
+    </>
   );
 };
 
