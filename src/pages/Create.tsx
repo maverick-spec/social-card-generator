@@ -28,10 +28,10 @@ const Create = () => {
   
   // Pre-fill with user email if available
   useEffect(() => {
-    if (user?.email) {
+    if (user?.primaryEmailAddress?.emailAddress) {
       setCardData(prev => ({
         ...prev,
-        email: user.email
+        email: user.primaryEmailAddress.emailAddress
       }));
     }
   }, [user]);
@@ -50,17 +50,17 @@ const Create = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-background to-background/90">
       <Header />
-      <main className="flex-grow pt-32 pb-20">
+      <main className="flex-grow pt-24 md:pt-32 pb-16 md:pb-20">
         <div className="container mx-auto px-4">
           <motion.div 
-            className="text-center mb-12"
+            className="text-center mb-8 md:mb-12"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h1 className="text-4xl font-bold mb-4">Create Your Social Card</h1>
+            <h1 className="text-3xl md:text-4xl font-bold mb-3 md:mb-4 text-foreground">Create Your Social Card</h1>
             <p className="text-muted-foreground max-w-2xl mx-auto">
               Fill in your details to generate a professional social card that you can share online
             </p>
@@ -87,13 +87,15 @@ const Create = () => {
           
           {/* Desktop view (side by side) */}
           <div className="hidden md:grid md:grid-cols-2 gap-10 max-w-6xl mx-auto">
-            <div>
+            <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
+              <h2 className="text-xl font-semibold mb-4 text-foreground">Edit Details</h2>
               <SocialCardForm onUpdate={handleDataUpdate} />
               <div className="mt-6">
                 <Button onClick={handleSaveCard}>Save Card</Button>
               </div>
             </div>
-            <div>
+            <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
+              <h2 className="text-xl font-semibold mb-4 text-foreground">Preview</h2>
               <SocialCardPreview data={cardData} />
             </div>
           </div>
