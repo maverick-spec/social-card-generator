@@ -25,6 +25,9 @@ import Privacy from "./pages/Privacy";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 
+// Add popup provider
+import { PopupProvider } from "./components/InspirationPopup";
+
 const queryClient = new QueryClient();
 
 // ScrollToTop component to ensure page scrolls to top on route change
@@ -87,13 +90,15 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider defaultTheme="light">
       <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
-        </TooltipProvider>
+        <PopupProvider> {/* Add the popup provider here */}
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <AppRoutes />
+            </BrowserRouter>
+          </TooltipProvider>
+        </PopupProvider>
       </AuthProvider>
     </ThemeProvider>
   </QueryClientProvider>

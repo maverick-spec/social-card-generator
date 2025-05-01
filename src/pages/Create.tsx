@@ -40,13 +40,44 @@ const Create = () => {
     setCardData(data);
   };
 
-  const handleSaveCard = () => {
-    // In a real app, this would save to a database
-    // For now, we'll just show a toast
-    toast({
-      title: "Card saved!",
-      description: "Your card has been saved successfully.",
-    });
+  const handleSaveCard = async () => {
+    try {
+      // In a real app with Supabase integration, this would save to the database
+      // The code below is a placeholder until Supabase is connected
+      
+      /* 
+      // Example Supabase code (will work after integration)
+      const { data, error } = await supabase
+        .from('cards')
+        .insert([
+          {
+            user_id: user.id,
+            name: cardData.name,
+            email: cardData.email,
+            phone: cardData.phone,
+            github_url: cardData.github,
+            linkedin_url: cardData.linkedin,
+            website: cardData.portfolio,
+            photo_url: cardData.photoUrl,
+            template_id: 'default'
+          }
+        ]);
+      
+      if (error) throw error;
+      */
+      
+      toast({
+        title: "Card saved!",
+        description: "Your card has been saved successfully.",
+      });
+    } catch (error) {
+      console.error('Error saving card:', error);
+      toast({
+        title: "Error saving card",
+        description: "There was a problem saving your card. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
