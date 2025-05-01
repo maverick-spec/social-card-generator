@@ -2,7 +2,7 @@
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, RoundedBox } from '@react-three/drei';
 import { useRef } from 'react';
-import { Mesh } from 'three';
+import type { Mesh } from 'three';
 
 export function Lanyard() {
   const meshRef = useRef<Mesh>(null);
