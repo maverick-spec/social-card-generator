@@ -38,9 +38,11 @@ export function Header() {
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
-          <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-            NexCard
-          </span>
+          <img 
+            src="/public/lovable-uploads/0fac59bc-cc22-4e8d-aadb-89ee6dcf8c8a.png" 
+            alt="NexCard" 
+            className="h-10 w-auto"
+          />
         </Link>
 
         {/* Desktop Navigation */}
@@ -83,51 +85,6 @@ export function Header() {
           <Link to="/templates" className={cn("nav-link", isActive("/templates") && "active")}>
             Templates
           </Link>
-          
-          <Link to="/pricing" className={cn("nav-link", isActive("/pricing") && "active")}>
-            Pricing
-          </Link>
-          
-          {/* Resources Dropdown */}
-          <div 
-            className="relative group"
-            onMouseEnter={() => handleMouseEnter("resources")}
-            onMouseLeave={handleMouseLeave}
-            ref={(el) => (dropdownRefs.current["resources"] = el)}
-          >
-            <button 
-              className={cn(
-                "nav-link flex items-center gap-1",
-                (isActive("/resources") || isActive("/blog") || isActive("/guides") || isActive("/help")) && "active"
-              )}
-            >
-              Resources
-              <ChevronDown className="w-4 h-4" />
-            </button>
-            
-            {activeDropdown === "resources" && (
-              <div className="absolute top-full left-0 mt-2 w-48 bg-white rounded-lg shadow-lg p-2 z-50">
-                <Link 
-                  to="/blog" 
-                  className="block px-4 py-2 rounded hover:bg-green/10"
-                >
-                  Blog
-                </Link>
-                <Link 
-                  to="/guides" 
-                  className="block px-4 py-2 rounded hover:bg-green/10"
-                >
-                  Guides
-                </Link>
-                <Link 
-                  to="/help" 
-                  className="block px-4 py-2 rounded hover:bg-green/10"
-                >
-                  Help Center
-                </Link>
-              </div>
-            )}
-          </div>
         </nav>
 
         {/* Actions */}
@@ -210,55 +167,6 @@ export function Header() {
           >
             Templates
           </Link>
-          
-          <Link 
-            to="/pricing" 
-            className={cn("py-2", isActive("/pricing") && "text-primary font-medium")}
-            onClick={() => setIsOpen(false)}
-          >
-            Pricing
-          </Link>
-          
-          {/* Resources Section */}
-          <div>
-            <button 
-              className="flex items-center justify-between w-full py-2"
-              onClick={() => setActiveDropdown(activeDropdown === "mobileResources" ? null : "mobileResources")}
-            >
-              <span className={cn(
-                (isActive("/resources") || isActive("/blog") || isActive("/guides") || isActive("/help")) && "text-primary font-medium"
-              )}>
-                Resources
-              </span>
-              <ChevronDown className="w-4 h-4" />
-            </button>
-            
-            {activeDropdown === "mobileResources" && (
-              <div className="pl-4 mt-2 space-y-2">
-                <Link 
-                  to="/blog" 
-                  className="block py-2"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Blog
-                </Link>
-                <Link 
-                  to="/guides" 
-                  className="block py-2"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Guides
-                </Link>
-                <Link 
-                  to="/help" 
-                  className="block py-2"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Help Center
-                </Link>
-              </div>
-            )}
-          </div>
           
           {!isAuthenticated && (
             <Button asChild variant="destructive" className="w-full mt-2">

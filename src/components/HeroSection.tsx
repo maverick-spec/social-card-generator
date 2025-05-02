@@ -62,7 +62,14 @@ export function HeroSection() {
 
         <div className="h-80 w-full mt-12 flex items-center justify-center">
           <div className="max-w-md w-full bg-card p-6 rounded-lg shadow-lg border border-border">
-            <h3 className="text-xl font-bold mb-4">Digital Card Preview</h3>
+            <div className="flex items-center justify-center mb-4">
+              <img 
+                src="/public/lovable-uploads/0fac59bc-cc22-4e8d-aadb-89ee6dcf8c8a.png" 
+                alt="NexCard Logo" 
+                className="h-10 w-auto mr-2"
+              />
+              <h3 className="text-xl font-bold">Digital Card Preview</h3>
+            </div>
             <div className="aspect-[2/3] bg-muted/20 rounded-lg flex items-center justify-center">
               <p className="text-muted-foreground text-center px-4">
                 Design your own professional digital business card

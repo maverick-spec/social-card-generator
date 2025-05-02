@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { Facebook, Twitter, Instagram, Linkedin, Github } from "lucide-react";
+import { Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
 import { Footer as CustomFooter } from "@/components/ui/footer";
 
 export function Footer() {
@@ -8,9 +8,9 @@ export function Footer() {
   const Logo = () => {
     return (
       <img 
-        src="/lovable-uploads/910a11a0-c287-46cf-a3ad-4ec672b86603.png" 
+        src="/public/lovable-uploads/0fac59bc-cc22-4e8d-aadb-89ee6dcf8c8a.png" 
         alt="NexCard Logo" 
-        className="h-10 w-auto"
+        className="h-12 w-auto"
       />
     );
   };
@@ -40,17 +40,11 @@ export function Footer() {
           href: "https://linkedin.com",
           label: "LinkedIn",
         },
-        {
-          icon: <Github className="h-5 w-5" />,
-          href: "https://github.com",
-          label: "GitHub",
-        },
       ]}
       mainLinks={[
         { href: "/product", label: "Product" },
         { href: "/features", label: "Features" },
         { href: "/templates", label: "Templates" },
-        { href: "/pricing", label: "Pricing" },
       ]}
       legalLinks={[
         { href: "/privacy", label: "Privacy" },
