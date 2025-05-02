@@ -1,13 +1,13 @@
 
 import { Header } from "@/components/Header";
-import { HeroSection } from "@/components/HeroSection";
-import { VideoSection } from "@/components/VideoSection";
-import { StepsSection } from "@/components/StepsSection";
-import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Star, CheckCircle, ArrowRight } from "lucide-react";
+import { CheckCircle, ArrowRight } from "lucide-react";
+import { Footer } from "@/components/Footer";
+import { StepsSection } from "@/components/StepsSection";
+import { HeroSection } from "@/components/blocks/hero-section-1";
+import { Card } from "@/components/ui/custom-card";
 
 const Index = () => {
   return (
@@ -15,59 +15,9 @@ const Index = () => {
       <Header />
       <main className="flex-grow">
         <HeroSection />
-        <VideoSection />
         <StepsSection />
         
-        {/* Testimonials Section */}
-        <section className="py-20 px-4 bg-muted/30">
-          <div className="container mx-auto">
-            <motion.div 
-              className="text-center mb-16"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-3xl md:text-4xl font-bold">What Our Users Say</h2>
-              <p className="mt-4 text-muted-foreground max-w-2xl mx-auto">
-                Join thousands of professionals who have transformed their networking experience
-              </p>
-            </motion.div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {testimonials.map((testimonial, index) => (
-                <motion.div
-                  key={index}
-                  className="bg-background rounded-xl shadow-md p-6"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <div className="flex items-center mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 text-green dark:text-hunter fill-current" />
-                    ))}
-                  </div>
-                  <p className="mb-4 italic">{testimonial.quote}</p>
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 rounded-full bg-green/20 dark:bg-hunter/20 flex items-center justify-center mr-3">
-                      <span className="text-green dark:text-hunter font-bold">
-                        {testimonial.name.charAt(0)}
-                      </span>
-                    </div>
-                    <div>
-                      <h4 className="font-bold">{testimonial.name}</h4>
-                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-        
-        {/* Features Highlight */}
+        {/* Features Highlight with Dots Cards */}
         <section className="py-20 px-4">
           <div className="container mx-auto">
             <motion.div 
@@ -87,17 +37,17 @@ const Index = () => {
               {features.map((feature, index) => (
                 <motion.div
                   key={index}
-                  className="p-6 rounded-xl bg-green/5 dark:bg-hunter/5 border border-green/10 dark:border-hunter/10"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
                 >
-                  <div className="w-12 h-12 rounded-full bg-green/10 dark:bg-hunter/10 flex items-center justify-center mb-4">
-                    <CheckCircle className="w-6 h-6 text-green dark:text-hunter" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                  <p className="text-muted-foreground">{feature.description}</p>
+                  <Card 
+                    variant="dots" 
+                    title={feature.title}
+                    description={feature.description}
+                    className="bg-background h-full"
+                  />
                 </motion.div>
               ))}
             </div>
@@ -150,24 +100,6 @@ const Index = () => {
     </div>
   );
 };
-
-const testimonials = [
-  {
-    quote: "CardCraft transformed how I network at events. The digital card is so much more impressive than a traditional business card.",
-    name: "Sarah Johnson",
-    role: "Marketing Director"
-  },
-  {
-    quote: "I love how easy it is to update my information. When I changed jobs, I simply updated my card once and all my connections saw the changes.",
-    name: "Michael Chen",
-    role: "Software Engineer"
-  },
-  {
-    quote: "As a freelancer, having a professional digital card has helped me stand out from the competition and win more clients.",
-    name: "Elena Rodriguez",
-    role: "Graphic Designer"
-  }
-];
 
 const features = [
   {
