@@ -51,12 +51,13 @@ export const AnimatedGroup = ({
   viewport,
   margin,
 }: AnimatedGroupProps) => {
-  const MotionComponent = motion[as as keyof typeof motion];
+  // Create the motion component based on the HTML element type
+  const Component = motion[as as keyof typeof motion] as React.ComponentType<any>;
   
   const childrenArray = React.Children.toArray(children);
 
   return (
-    <MotionComponent
+    <Component
       className={cn(className)}
       initial="hidden"
       whileInView="visible"
@@ -70,6 +71,6 @@ export const AnimatedGroup = ({
           </motion.div>
         );
       })}
-    </MotionComponent>
+    </Component>
   );
 };
