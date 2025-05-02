@@ -2,15 +2,10 @@
 import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { CustomFooter } from "@/components/blocks/CustomFooter";
 import { SocialCardForm } from "@/components/SocialCardForm";
 import { SocialCardPreview } from "@/components/SocialCardPreview";
-import { CardPreview } from "@/components/blocks/CardPreview";
-import { GradientSelector } from "@/components/blocks/GradientSelector";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
@@ -18,24 +13,18 @@ import { toast } from "@/hooks/use-toast";
 // Default empty card data
 const defaultCardData = {
   name: "",
-  title: "Your Title",
   phone: "",
   email: "",
   linkedin: "",
   github: "",
   portfolio: "",
   photoUrl: "",
-  twitter: "",
-  facebook: "",
-  instagram: "",
 };
 
 const Create = () => {
   const { user } = useAuth();
   const [cardData, setCardData] = useState(defaultCardData);
   const [activeTab, setActiveTab] = useState("edit");
-  const [selectedGradient, setSelectedGradient] = useState("");
-  const [isLightMode, setIsLightMode] = useState(true);
   
   // Pre-fill with user email if available
   useEffect(() => {
@@ -48,7 +37,7 @@ const Create = () => {
   }, [user]);
 
   const handleDataUpdate = (data: typeof cardData) => {
-    setCardData({...defaultCardData, ...data});
+    setCardData(data);
   };
 
   const handleSaveCard = async () => {
@@ -64,18 +53,12 @@ const Create = () => {
           {
             user_id: user.id,
             name: cardData.name,
-            title: cardData.title,
             email: cardData.email,
             phone: cardData.phone,
             github_url: cardData.github,
             linkedin_url: cardData.linkedin,
             website: cardData.portfolio,
-            twitter_url: cardData.twitter,
-            facebook_url: cardData.facebook,
-            instagram_url: cardData.instagram,
             photo_url: cardData.photoUrl,
-            background_gradient: selectedGradient,
-            is_light_mode: isLightMode,
             template_id: 'default'
           }
         ]);
@@ -123,28 +106,12 @@ const Create = () => {
               </TabsList>
               <TabsContent value="edit" className="mt-6">
                 <SocialCardForm onUpdate={handleDataUpdate} />
-                <GradientSelector 
-                  selectedGradient={selectedGradient} 
-                  onSelectGradient={setSelectedGradient} 
-                />
-                <div className="mt-6 flex items-center space-x-2">
-                  <Switch 
-                    id="theme-mode"
-                    checked={isLightMode} 
-                    onCheckedChange={setIsLightMode} 
-                  />
-                  <Label htmlFor="theme-mode">Light Mode</Label>
-                </div>
                 <div className="mt-6 flex justify-center">
                   <Button onClick={handleSaveCard}>Save Card</Button>
                 </div>
               </TabsContent>
               <TabsContent value="preview" className="mt-6">
-                <CardPreview 
-                  data={cardData} 
-                  isLightMode={isLightMode} 
-                  gradientBg={selectedGradient}
-                />
+                <SocialCardPreview data={cardData} />
               </TabsContent>
             </Tabs>
           </div>
@@ -154,34 +121,18 @@ const Create = () => {
             <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
               <h2 className="text-xl font-semibold mb-4 text-foreground">Edit Details</h2>
               <SocialCardForm onUpdate={handleDataUpdate} />
-              <GradientSelector 
-                selectedGradient={selectedGradient} 
-                onSelectGradient={setSelectedGradient} 
-              />
-              <div className="mt-6 flex items-center space-x-2">
-                <Switch 
-                  id="theme-mode-desktop"
-                  checked={isLightMode} 
-                  onCheckedChange={setIsLightMode} 
-                />
-                <Label htmlFor="theme-mode-desktop">Light Mode</Label>
-              </div>
               <div className="mt-6">
                 <Button onClick={handleSaveCard}>Save Card</Button>
               </div>
             </div>
             <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
               <h2 className="text-xl font-semibold mb-4 text-foreground">Preview</h2>
-              <CardPreview 
-                data={cardData} 
-                isLightMode={isLightMode} 
-                gradientBg={selectedGradient}
-              />
+              <SocialCardPreview data={cardData} />
             </div>
           </div>
         </div>
       </main>
-      <CustomFooter />
+      <Footer />
     </div>
   );
 };
