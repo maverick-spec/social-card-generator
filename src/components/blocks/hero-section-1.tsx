@@ -6,23 +6,22 @@ import { Button } from '@/components/ui/button';
 import { AnimatedGroup } from '@/components/ui/animated-group';
 import { cn } from '@/lib/utils';
 import { useAuth } from "@/context/AuthContext";
+import { motion, type Variants } from "framer-motion";
 
-const transitionVariants = {
-    item: {
-        hidden: {
-            opacity: 0,
-            filter: 'blur(12px)',
-            y: 12,
-        },
-        visible: {
-            opacity: 1,
-            filter: 'blur(0px)',
-            y: 0,
-            transition: {
-                type: 'spring',
-                bounce: 0.3,
-                duration: 1.5,
-            },
+const transitionVariants: Variants = {
+    hidden: {
+        opacity: 0,
+        filter: 'blur(12px)',
+        y: 12,
+    },
+    visible: {
+        opacity: 1,
+        filter: 'blur(0px)',
+        y: 0,
+        transition: {
+            type: 'spring',
+            bounce: 0.3,
+            duration: 1.5,
         },
     },
 };
@@ -53,26 +52,15 @@ export function HeroSection() {
                     <div className="relative pt-24 md:pt-36">
                         <AnimatedGroup
                             variants={{
-                                container: {
-                                    visible: {
-                                        transition: {
-                                            delayChildren: 0.6,
-                                        },
-                                    },
+                                hidden: {
+                                    opacity: 0,
+                                    y: 20,
                                 },
-                                item: {
-                                    hidden: {
-                                        opacity: 0,
-                                        y: 20,
-                                    },
-                                    visible: {
-                                        opacity: 1,
-                                        y: 0,
-                                        transition: {
-                                            type: 'spring',
-                                            bounce: 0.3,
-                                            duration: 2,
-                                        },
+                                visible: {
+                                    opacity: 1,
+                                    y: 0,
+                                    transition: {
+                                        delayChildren: 0.6,
                                     },
                                 },
                             }}
@@ -117,15 +105,18 @@ export function HeroSection() {
 
                                 <AnimatedGroup
                                     variants={{
-                                        container: {
-                                            visible: {
-                                                transition: {
-                                                    staggerChildren: 0.05,
-                                                    delayChildren: 0.75,
-                                                },
+                                        hidden: {
+                                            opacity: 0,
+                                            y: 20,
+                                        },
+                                        visible: {
+                                            opacity: 1,
+                                            y: 0,
+                                            transition: {
+                                                staggerChildren: 0.05,
+                                                delayChildren: 0.75,
                                             },
                                         },
-                                        ...transitionVariants,
                                     }}
                                     className="mt-12 flex flex-col items-center lg:items-start justify-center gap-2 md:flex-row">
                                     <div
@@ -157,15 +148,18 @@ export function HeroSection() {
 
                         <AnimatedGroup
                             variants={{
-                                container: {
-                                    visible: {
-                                        transition: {
-                                            staggerChildren: 0.05,
-                                            delayChildren: 0.75,
-                                        },
+                                hidden: {
+                                    opacity: 0,
+                                    y: 20,
+                                },
+                                visible: {
+                                    opacity: 1,
+                                    y: 0,
+                                    transition: {
+                                        staggerChildren: 0.05,
+                                        delayChildren: 0.75,
                                     },
                                 },
-                                ...transitionVariants,
                             }}
                             className="lg:absolute lg:right-0 lg:top-36 lg:w-1/2 mt-12 lg:mt-0">
                             <div className="relative overflow-hidden px-2">

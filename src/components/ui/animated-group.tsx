@@ -11,7 +11,7 @@ interface AnimatedGroupProps {
   duration?: number;
   delay?: number;
   once?: boolean;
-  margin?: string;
+  margin?: string | number;
 }
 
 export function AnimatedGroup({
