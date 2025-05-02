@@ -1,12 +1,20 @@
 
 import { cn } from "@/lib/utils";
-import { motion, type VariantProps, type Variants, type ViewportOptions } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import React from "react";
 
 type MarginType = number | string;
 
+// Define our own ViewportOptions interface to match framer-motion's expected structure
+interface ViewportOptions {
+  once?: boolean;
+  margin?: string;
+  amount?: "some" | "all" | number;
+  root?: React.RefObject<Element>;
+}
+
 type AnimatedGroupProps = {
-  as?: React.ElementType;
+  as?: keyof typeof motion;
   className?: string;
   children: React.ReactNode;
   variants?: {
@@ -43,7 +51,7 @@ export const AnimatedGroup = ({
   viewport,
   margin,
 }: AnimatedGroupProps) => {
-  const Component = motion[as as keyof typeof motion] || motion.div;
+  const Component = motion[as];
 
   const childrenArray = React.Children.toArray(children);
 
