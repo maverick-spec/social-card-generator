@@ -9,7 +9,6 @@ import {
   DialogTitle
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from 'react-router-dom';
 
 // Array of inspirational messages
 const inspirationalMessages = [
@@ -46,6 +45,7 @@ const inspirationalMessages = [
 type PopupContextType = {
   showPopup: boolean;
   setShowPopup: (show: boolean) => void;
+  navigateToCreate: () => void;
 };
 
 const PopupContext = createContext<PopupContextType | undefined>(undefined);
@@ -59,6 +59,12 @@ export const PopupProvider = ({ children }: { children: ReactNode }) => {
     const randomIndex = Math.floor(Math.random() * inspirationalMessages.length);
     setMessage(inspirationalMessages[randomIndex]);
     setShowPopup(true);
+  };
+  
+  // Function to handle navigation - to be used instead of direct useNavigate
+  const navigateToCreate = () => {
+    // Instead of directly navigating, we'll use window.location
+    window.location.href = '/create';
   };
   
   useEffect(() => {
@@ -86,7 +92,7 @@ export const PopupProvider = ({ children }: { children: ReactNode }) => {
   }, []);
   
   return (
-    <PopupContext.Provider value={{ showPopup, setShowPopup }}>
+    <PopupContext.Provider value={{ showPopup, setShowPopup, navigateToCreate }}>
       {children}
       <InspirationPopup message={message} />
     </PopupContext.Provider>
@@ -109,8 +115,7 @@ type InspirationPopupProps = {
 };
 
 const InspirationPopup = ({ message }: InspirationPopupProps) => {
-  const { showPopup, setShowPopup } = usePopup();
-  const navigate = useNavigate();
+  const { showPopup, setShowPopup, navigateToCreate } = usePopup();
   
   const handleDismiss = () => {
     setShowPopup(false);
@@ -118,7 +123,7 @@ const InspirationPopup = ({ message }: InspirationPopupProps) => {
   
   const handleLetGo = () => {
     setShowPopup(false);
-    navigate('/create');
+    navigateToCreate();
   };
   
   return (

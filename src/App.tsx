@@ -90,15 +90,15 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider defaultTheme="light">
       <AuthProvider>
-        <PopupProvider> {/* Add the popup provider here */}
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
+        <BrowserRouter>
+          <PopupProvider> {/* Moved the PopupProvider inside BrowserRouter */}
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
               <AppRoutes />
-            </BrowserRouter>
-          </TooltipProvider>
-        </PopupProvider>
+            </TooltipProvider>
+          </PopupProvider>
+        </BrowserRouter>
       </AuthProvider>
     </ThemeProvider>
   </QueryClientProvider>
