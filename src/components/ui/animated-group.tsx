@@ -14,7 +14,7 @@ interface ViewportOptions {
 }
 
 type AnimatedGroupProps = {
-  as?: keyof typeof motion;
+  as?: keyof JSX.IntrinsicElements;
   className?: string;
   children: React.ReactNode;
   variants?: {
@@ -51,12 +51,12 @@ export const AnimatedGroup = ({
   viewport,
   margin,
 }: AnimatedGroupProps) => {
-  const Component = motion[as];
-
+  const MotionComponent = motion[as as keyof typeof motion];
+  
   const childrenArray = React.Children.toArray(children);
 
   return (
-    <Component
+    <MotionComponent
       className={cn(className)}
       initial="hidden"
       whileInView="visible"
@@ -70,6 +70,6 @@ export const AnimatedGroup = ({
           </motion.div>
         );
       })}
-    </Component>
+    </MotionComponent>
   );
 };
