@@ -47,19 +47,19 @@ const Pricing = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow pt-24">
-        <section className="py-20 px-4 animated-bg">
+      <main className="flex-grow pt-20">
+        <section className="py-10 px-4 animated-bg">
           <div className="container mx-auto">
             <motion.div 
-              className="max-w-4xl mx-auto text-center mb-16"
+              className="max-w-4xl mx-auto text-center mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
                 Simple, Transparent <span className="text-primary">Pricing</span>
               </h1>
-              <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
+              <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
                 Choose the perfect plan for your professional needs. No hidden fees, cancel anytime.
               </p>
             </motion.div>
@@ -71,7 +71,7 @@ const Pricing = () => {
                 defaultPlan="pro"
                 defaultInterval="monthly"
                 onPlanSelect={(plan) => console.log("Selected plan:", plan)}
-                containerClassName="py-12"
+                containerClassName="py-8"
                 buttonClassName="bg-primary hover:bg-primary/90"
               />
             </div>

@@ -1,6 +1,6 @@
 
 import { cn } from "@/lib/utils";
-import { MotionProps, motion } from "framer-motion";
+import { motion, type VariantProps, type Variants, type ViewportOptions } from "framer-motion";
 import React from "react";
 
 type MarginType = number | string;
@@ -9,10 +9,13 @@ type AnimatedGroupProps = {
   as?: React.ElementType;
   className?: string;
   children: React.ReactNode;
-  variants?: MotionProps["variants"];
+  variants?: {
+    container: Variants;
+    item: Variants;
+  };
   delay?: number;
   staggerDelay?: number;
-  viewport?: MotionProps["viewport"];
+  viewport?: ViewportOptions;
   margin?: MarginType;
 };
 
@@ -22,9 +25,8 @@ export const AnimatedGroup = ({
   children,
   variants = {
     container: {
-      hidden: { opacity: 0 },
+      hidden: {},
       visible: {
-        opacity: 1,
         transition: {
           staggerChildren: 0.25,
         },
@@ -50,7 +52,7 @@ export const AnimatedGroup = ({
       className={cn(className)}
       initial="hidden"
       whileInView="visible"
-      viewport={viewport || { once: true, margin: margin }}
+      viewport={viewport || { once: true, margin: margin ? String(margin) : undefined }}
       variants={variants.container}
     >
       {childrenArray.map((child, i) => {

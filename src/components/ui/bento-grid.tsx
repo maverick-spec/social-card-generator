@@ -65,7 +65,7 @@ const itemsSample: BentoItem[] = [
     },
 ];
 
-function BentoGrid({ items = itemsSample }: BentoGridProps) {
+export function BentoGrid({ items = itemsSample }: BentoGridProps) {
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 p-4 max-w-7xl mx-auto">
             {items.map((item, index) => (
@@ -76,7 +76,8 @@ function BentoGrid({ items = itemsSample }: BentoGridProps) {
                         "border border-gray-100/80 dark:border-white/10 bg-white dark:bg-black",
                         "hover:shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:hover:shadow-[0_2px_12px_rgba(255,255,255,0.03)]",
                         "hover:-translate-y-0.5 will-change-transform",
-                        item.colSpan ? `col-span-1 ${item.colSpan === 2 ? "md:col-span-2" : ""}` : "col-span-1",
+                        item.colSpan || "col-span-1",
+                        item.colSpan === 2 ? "md:col-span-2" : "",
                         {
                             "shadow-[0_2px_12px_rgba(0,0,0,0.03)] -translate-y-0.5":
                                 item.hasPersistentHover,
@@ -152,5 +153,3 @@ function BentoGrid({ items = itemsSample }: BentoGridProps) {
         </div>
     );
 }
-
-export { BentoGrid, type BentoItem };
