@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
-import { Lanyard } from "@/components/Lanyard";
 
 export function HeroSection() {
   const { isAuthenticated } = useAuth();
@@ -61,8 +60,15 @@ export function HeroSection() {
           </motion.p>
         </motion.div>
 
-        <div className="h-80 w-full mt-12">
-          <Lanyard />
+        <div className="h-80 w-full mt-12 flex items-center justify-center">
+          <div className="max-w-md w-full bg-card p-6 rounded-lg shadow-lg border border-border">
+            <h3 className="text-xl font-bold mb-4">Digital Card Preview</h3>
+            <div className="aspect-[2/3] bg-muted/20 rounded-lg flex items-center justify-center">
+              <p className="text-muted-foreground text-center px-4">
+                Design your own professional digital business card
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
