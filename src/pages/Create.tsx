@@ -9,21 +9,31 @@ import { motion } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
+import { SocialCardData } from "@/types/social-card";
+import { useSearchParams } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 
 // Default empty card data
-const defaultCardData = {
+const defaultCardData: SocialCardData = {
   name: "",
+  title: "",
   phone: "",
   email: "",
   linkedin: "",
   github: "",
   portfolio: "",
   photoUrl: "",
+  about: "",
+  interests: "",
+  gradient: "dark",
 };
 
 const Create = () => {
   const { user } = useAuth();
-  const [cardData, setCardData] = useState(defaultCardData);
+  const [searchParams] = useSearchParams();
+  const templateId = searchParams.get('template') || 'classic';
+  
+  const [cardData, setCardData] = useState<SocialCardData>(defaultCardData);
   const [activeTab, setActiveTab] = useState("edit");
   
   // Pre-fill with user email if available
@@ -36,35 +46,43 @@ const Create = () => {
     }
   }, [user]);
 
-  const handleDataUpdate = (data: typeof cardData) => {
+  const handleDataUpdate = (data: SocialCardData) => {
     setCardData(data);
   };
 
   const handleSaveCard = async () => {
     try {
-      // In a real app with Supabase integration, this would save to the database
-      // The code below is a placeholder until Supabase is connected
-      
-      /* 
-      // Example Supabase code (will work after integration)
-      const { data, error } = await supabase
+      if (!user?.id) {
+        toast({
+          title: "Authentication required",
+          description: "Please sign in to save your card",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // In a real app with Supabase integration, save to the database
+      const { error } = await supabase
         .from('cards')
         .insert([
           {
             user_id: user.id,
             name: cardData.name,
+            title: cardData.title,
             email: cardData.email,
             phone: cardData.phone,
             github_url: cardData.github,
             linkedin_url: cardData.linkedin,
-            website: cardData.portfolio,
+            website: cardData.website,
             photo_url: cardData.photoUrl,
-            template_id: 'default'
+            about: cardData.about,
+            interests: cardData.interests,
+            gradient: cardData.gradient,
+            template_id: templateId
           }
         ]);
       
       if (error) throw error;
-      */
       
       toast({
         title: "Card saved!",
@@ -105,13 +123,13 @@ const Create = () => {
                 <TabsTrigger value="preview">Preview</TabsTrigger>
               </TabsList>
               <TabsContent value="edit" className="mt-6">
-                <SocialCardForm onUpdate={handleDataUpdate} />
+                <SocialCardForm onUpdate={handleDataUpdate} initialData={cardData} />
                 <div className="mt-6 flex justify-center">
                   <Button onClick={handleSaveCard}>Save Card</Button>
                 </div>
               </TabsContent>
               <TabsContent value="preview" className="mt-6">
-                <SocialCardPreview data={cardData} />
+                <SocialCardPreview data={cardData} template={templateId} />
               </TabsContent>
             </Tabs>
           </div>
@@ -120,14 +138,25 @@ const Create = () => {
           <div className="hidden md:grid md:grid-cols-2 gap-10 max-w-6xl mx-auto">
             <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
               <h2 className="text-xl font-semibold mb-4 text-foreground">Edit Details</h2>
-              <SocialCardForm onUpdate={handleDataUpdate} />
+              <SocialCardForm onUpdate={handleDataUpdate} initialData={cardData} />
               <div className="mt-6">
                 <Button onClick={handleSaveCard}>Save Card</Button>
               </div>
             </div>
             <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
               <h2 className="text-xl font-semibold mb-4 text-foreground">Preview</h2>
-              <SocialCardPreview data={cardData} />
+              <Tabs defaultValue={templateId}>
+                <TabsList className="w-full mb-6">
+                  <TabsTrigger value="classic">Classic</TabsTrigger>
+                  <TabsTrigger value="modern">Modern</TabsTrigger>
+                </TabsList>
+                <TabsContent value="classic">
+                  <SocialCardPreview data={cardData} template="classic" />
+                </TabsContent>
+                <TabsContent value="modern">
+                  <SocialCardPreview data={cardData} template="modern" />
+                </TabsContent>
+              </Tabs>
             </div>
           </div>
         </div>

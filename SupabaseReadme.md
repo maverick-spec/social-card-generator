@@ -1,18 +1,14 @@
 
-# NexCard Supabase Implementation
+# Supabase Integration Documentation
 
-This document tracks and explains all Supabase implementations for the NexCard application. It serves as a comprehensive guide for understanding the database structure, API functionality, and authentication mechanisms.
+This file documents all Supabase configurations and integrations used in the project.
 
-## Current Implementation Status
-
-> Note: This document will be updated as Supabase features are integrated into the application.
-
-Currently, the application uses Clerk for authentication but syncs user data to Supabase for data persistence and additional functionality.
-
-## Database Structure
+## Database Tables
 
 ### Users Table
-Schema for storing user information from Clerk:
+
+This table stores user information synced from Clerk authentication:
+
 ```sql
 CREATE TABLE public.users (
   id UUID PRIMARY KEY,
@@ -28,23 +24,25 @@ CREATE TABLE public.users (
 -- Enable Row Level Security
 ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
 
--- Create policies for secure data access
+-- Create a secure policy that allows users to view their own data
 CREATE POLICY "Users can view their own data" 
   ON public.users 
   FOR SELECT 
   USING (auth.uid() = id);
   
+-- Create a secure policy that allows users to update their own data
 CREATE POLICY "Users can update their own data" 
   ON public.users 
   FOR UPDATE 
   USING (auth.uid() = id);
 ```
 
-### Clerk to Supabase Sync Mechanism
-A trigger and function are set up to automatically sync user data from Clerk to Supabase:
+### Clerk to Supabase Sync Function
+
+To automatically sync user data from Clerk to our Supabase database:
 
 ```sql
--- Function to sync Clerk user data to Supabase
+-- Create a function to handle user information sync from Clerk to Supabase
 CREATE OR REPLACE FUNCTION public.sync_user_from_clerk()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -70,39 +68,71 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- Trigger to execute the function on user creation/update
+-- Create a trigger to sync user data on insert or update
 CREATE TRIGGER trigger_sync_user_from_clerk
 AFTER INSERT OR UPDATE ON auth.users
 FOR EACH ROW
 EXECUTE FUNCTION public.sync_user_from_clerk();
 ```
 
-## API Integration
+## Cards Table (SQL to create this table)
 
-User data can be accessed through Supabase client using queries like:
+This is the SQL to create a table that will store user-generated social cards:
 
-```javascript
-// Example of fetching user data
-const fetchUserProfile = async (userId) => {
-  const { data, error } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', userId)
-    .single();
-    
-  if (error) {
-    console.error('Error fetching user profile:', error);
-    return null;
-  }
+```sql
+CREATE TABLE public.cards (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  title TEXT,
+  email TEXT,
+  phone TEXT,
+  github_url TEXT, 
+  linkedin_url TEXT,
+  website TEXT,
+  photo_url TEXT,
+  about TEXT,
+  interests TEXT,
+  gradient TEXT,
+  template_id TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL
+);
+
+-- Enable Row Level Security
+ALTER TABLE public.cards ENABLE ROW LEVEL SECURITY;
+
+-- Create a secure policy that allows users to view their own cards
+CREATE POLICY "Users can view their own cards" 
+  ON public.cards 
+  FOR SELECT 
+  USING (auth.uid() = user_id);
   
-  return data;
-};
+-- Create a secure policy that allows users to insert their own cards
+CREATE POLICY "Users can insert their own cards" 
+  ON public.cards 
+  FOR INSERT 
+  WITH CHECK (auth.uid() = user_id);
+  
+-- Create a secure policy that allows users to update their own cards
+CREATE POLICY "Users can update their own cards" 
+  ON public.cards 
+  FOR UPDATE 
+  USING (auth.uid() = user_id);
+  
+-- Create a secure policy that allows users to delete their own cards
+CREATE POLICY "Users can delete their own cards" 
+  ON public.cards 
+  FOR DELETE 
+  USING (auth.uid() = user_id);
 ```
 
-## Future Implementations
+## API Keys
 
-As the application grows, additional tables and functionality will be added to the Supabase backend:
-- Card data storage
-- Analytics tracking
-- Media storage
-- API integrations
+- **Clerk API Key**: `VITE_CLERK_PUBLISHABLE_KEY=pk_test_cHJlbWl1bS1hbW9lYmEtMTMuY2xlcmsuYWNjb3VudHMuZGV2JA`
+
+## Authentication Flow
+
+1. User authenticates using Clerk
+2. User data is automatically synced to Supabase via the trigger function
+3. The app can access user data from both Clerk (for auth UI) and Supabase (for database operations)

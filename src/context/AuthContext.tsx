@@ -1,6 +1,7 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth as useClerkAuth, useUser, useClerk } from "@clerk/clerk-react";
+import { supabase } from "@/integrations/supabase/client";
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -27,6 +28,30 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setIsAuthenticated(!!isSignedIn);
   }, [isSignedIn]);
+
+  // Sync user data from Clerk to Supabase when the user signs in
+  useEffect(() => {
+    const syncUserToSupabase = async () => {
+      if (isSignedIn && user) {
+        try {
+          // This relies on the backend trigger we created to sync data to our public users table
+          await supabase.auth.updateUser({
+            data: {
+              first_name: user.firstName,
+              last_name: user.lastName,
+              image_url: user.imageUrl
+            }
+          });
+          
+          console.log('User data synced with Supabase');
+        } catch (error) {
+          console.error('Error syncing user data with Supabase:', error);
+        }
+      }
+    };
+
+    syncUserToSupabase();
+  }, [isSignedIn, user]);
 
   const logout = async () => {
     await signOut();
