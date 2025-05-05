@@ -6,8 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { useEffect } from "react";
-import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
 import { AuthProvider } from "@/context/AuthContext";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Templates from "./pages/Templates";
 import Create from "./pages/Create";
@@ -36,7 +36,7 @@ const ScrollToTop = () => {
   return null;
 };
 
-// App Router Component with Clerk Auth
+// App Router Component
 const AppRoutes = () => {
   return (
     <>
@@ -46,24 +46,14 @@ const AppRoutes = () => {
         <Route path="/templates" element={<Templates />} />
         <Route path="/login" element={<Login />} />
         <Route path="/create" element={
-          <>
-            <SignedIn>
-              <Create />
-            </SignedIn>
-            <SignedOut>
-              <RedirectToSignIn />
-            </SignedOut>
-          </>
+          <ProtectedRoute>
+            <Create />
+          </ProtectedRoute>
         } />
         <Route path="/dashboard" element={
-          <>
-            <SignedIn>
-              <Dashboard />
-            </SignedIn>
-            <SignedOut>
-              <RedirectToSignIn />
-            </SignedOut>
-          </>
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
         } />
         <Route path="/product" element={<Product />} />
         <Route path="/features" element={<Features />} />

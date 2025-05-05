@@ -10,7 +10,7 @@ import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { SocialCardData } from "@/types/social-card";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 
 // Default empty card data
@@ -29,12 +29,14 @@ const defaultCardData: SocialCardData = {
 };
 
 const Create = () => {
-  const { user } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const templateId = searchParams.get('template') || 'classic';
   
   const [cardData, setCardData] = useState<SocialCardData>(defaultCardData);
   const [activeTab, setActiveTab] = useState("edit");
+  const [isSaving, setIsSaving] = useState(false);
   
   // Pre-fill with user email if available
   useEffect(() => {
@@ -46,13 +48,22 @@ const Create = () => {
     }
   }, [user]);
 
+  // Redirect to login if not authenticated after loading
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isLoading, isAuthenticated, navigate]);
+
   const handleDataUpdate = (data: SocialCardData) => {
     setCardData(data);
   };
 
   const handleSaveCard = async () => {
     try {
-      if (!user?.id) {
+      setIsSaving(true);
+      
+      if (!isAuthenticated || !user?.id) {
         toast({
           title: "Authentication required",
           description: "Please sign in to save your card",
@@ -61,7 +72,16 @@ const Create = () => {
         return;
       }
 
-      // Insert into the new cards table
+      if (!cardData.name) {
+        toast({
+          title: "Name is required",
+          description: "Please enter your name to save the card",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Insert into the cards table
       const { error } = await supabase
         .from('cards')
         .insert({
@@ -72,7 +92,7 @@ const Create = () => {
           phone: cardData.phone,
           github_url: cardData.github,
           linkedin_url: cardData.linkedin,
-          website: cardData.website,
+          website: cardData.portfolio,  // Map portfolio to website
           photo_url: cardData.photoUrl,
           about: cardData.about,
           interests: cardData.interests,
@@ -80,7 +100,10 @@ const Create = () => {
           template_id: templateId
         });
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error saving card:', error);
+        throw error;
+      }
       
       toast({
         title: "Card saved!",
@@ -93,8 +116,23 @@ const Create = () => {
         description: "There was a problem saving your card. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsSaving(false);
     }
   };
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col bg-gradient-to-br from-background to-background/90">
+        <Header />
+        <main className="flex-grow pt-24 md:pt-32 pb-16 md:pb-20 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-background to-background/90">
@@ -123,7 +161,9 @@ const Create = () => {
               <TabsContent value="edit" className="mt-6">
                 <SocialCardForm onUpdate={handleDataUpdate} initialData={cardData} />
                 <div className="mt-6 flex justify-center">
-                  <Button onClick={handleSaveCard}>Save Card</Button>
+                  <Button onClick={handleSaveCard} disabled={isSaving}>
+                    {isSaving ? "Saving..." : "Save Card"}
+                  </Button>
                 </div>
               </TabsContent>
               <TabsContent value="preview" className="mt-6">
@@ -138,7 +178,9 @@ const Create = () => {
               <h2 className="text-xl font-semibold mb-4 text-foreground">Edit Details</h2>
               <SocialCardForm onUpdate={handleDataUpdate} initialData={cardData} />
               <div className="mt-6">
-                <Button onClick={handleSaveCard}>Save Card</Button>
+                <Button onClick={handleSaveCard} disabled={isSaving}>
+                  {isSaving ? "Saving..." : "Save Card"}
+                </Button>
               </div>
             </div>
             <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
