@@ -34,16 +34,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const syncUserToSupabase = async () => {
       if (isSignedIn && user) {
         try {
-          // This relies on the backend trigger we created to sync data to our public users table
-          await supabase.auth.updateUser({
-            data: {
-              first_name: user.firstName,
-              last_name: user.lastName,
-              image_url: user.imageUrl
-            }
-          });
-          
-          console.log('User data synced with Supabase');
+          const { data, error } = await supabase
+            .from('users')
+            .upsert({
+              id: userId,
+              email: user.primaryEmailAddress?.emailAddress || '',
+              first_name: user.firstName || '',
+              last_name: user.lastName || '',
+              image_url: user.imageUrl || '',
+              last_sign_in: new Date().toISOString(),
+              updated_at: new Date().toISOString()
+            }, {
+              onConflict: 'id'
+            });
+            
+          if (error) {
+            console.error('Error syncing user data with Supabase:', error);
+          } else {
+            console.log('User data synced with Supabase');
+          }
         } catch (error) {
           console.error('Error syncing user data with Supabase:', error);
         }
@@ -51,7 +60,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     syncUserToSupabase();
-  }, [isSignedIn, user]);
+  }, [isSignedIn, user, userId]);
 
   const logout = async () => {
     await signOut();

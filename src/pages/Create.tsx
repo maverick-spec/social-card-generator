@@ -12,6 +12,7 @@ import { toast } from "@/hooks/use-toast";
 import { SocialCardData } from "@/types/social-card";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { v4 as uuidv4 } from "uuid";
 
 // Default empty card data
 const defaultCardData: SocialCardData = {
@@ -38,6 +39,8 @@ const Create = () => {
   const [cardData, setCardData] = useState<SocialCardData>(defaultCardData);
   const [activeTab, setActiveTab] = useState("edit");
   const [isSaving, setIsSaving] = useState(false);
+  const [isGeneratingShareLink, setIsGeneratingShareLink] = useState(false);
+  const [shareLink, setShareLink] = useState<string | null>(null);
   
   // Pre-fill with user email if available
   useEffect(() => {
@@ -76,7 +79,7 @@ const Create = () => {
       }
 
       // Insert into the cards table
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('cards')
         .insert({
           user_id: user.id,
@@ -85,15 +88,16 @@ const Create = () => {
           email: cardData.email,
           phone: cardData.phone,
           github_url: cardData.github,
-          twitter_url: cardData.twitter,  // Add Twitter URL
+          twitter_url: cardData.twitter,
           linkedin_url: cardData.linkedin,
-          website: cardData.portfolio,  // Map portfolio to website
+          website: cardData.portfolio,
           photo_url: cardData.photoUrl,
           about: cardData.about,
           interests: cardData.interests,
           gradient: cardData.gradient,
           template_id: templateId
-        });
+        })
+        .select();
       
       if (error) {
         console.error('Error saving card:', error);
@@ -116,6 +120,79 @@ const Create = () => {
       });
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  // Generate a share link
+  const handleGenerateShareLink = async () => {
+    try {
+      setIsGeneratingShareLink(true);
+      
+      if (!cardData.name) {
+        toast({
+          title: "Name is required",
+          description: "Please enter your name to generate a share link",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      const cardId = uuidv4();
+      const shareableUrl = `${window.location.origin}/share/${cardId}`;
+      
+      // First check if user is authenticated for saving purposes
+      if (isAuthenticated && user?.id) {
+        // Save the card to database with the generated ID
+        const { error } = await supabase
+          .from('cards')
+          .insert({
+            id: cardId,
+            user_id: user.id,
+            name: cardData.name || "",
+            title: cardData.title,
+            email: cardData.email,
+            phone: cardData.phone,
+            github_url: cardData.github,
+            twitter_url: cardData.twitter,
+            linkedin_url: cardData.linkedin,
+            website: cardData.portfolio,
+            photo_url: cardData.photoUrl,
+            about: cardData.about,
+            interests: cardData.interests,
+            gradient: cardData.gradient,
+            template_id: templateId
+          });
+          
+        if (error) {
+          throw error;
+        }
+      } else {
+        // If not authenticated, we'll just create a shareable link without saving
+        toast({
+          title: "Not logged in",
+          description: "Your card will be available via this link but won't be saved to your account.",
+        });
+      }
+      
+      // Set the share link state
+      setShareLink(shareableUrl);
+      
+      // Copy to clipboard 
+      await navigator.clipboard.writeText(shareableUrl);
+      toast({
+        title: "Share link generated!",
+        description: "Link has been copied to clipboard.",
+      });
+      
+    } catch (error) {
+      console.error('Error generating share link:', error);
+      toast({
+        title: "Error generating link",
+        description: "There was a problem creating your share link. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingShareLink(false);
     }
   };
 
@@ -158,10 +235,19 @@ const Create = () => {
               </TabsList>
               <TabsContent value="edit" className="mt-6">
                 <SocialCardForm onUpdate={handleDataUpdate} initialData={cardData} />
-                <div className="mt-6 flex justify-center">
+                <div className="mt-6 flex flex-col gap-3">
                   <Button onClick={handleSaveCard} disabled={isSaving}>
                     {isSaving ? "Saving..." : "Save Card"}
                   </Button>
+                  <Button onClick={handleGenerateShareLink} variant="outline" disabled={isGeneratingShareLink}>
+                    {isGeneratingShareLink ? "Generating..." : "Generate Share Link"}
+                  </Button>
+                  {shareLink && (
+                    <div className="mt-2 p-3 bg-muted rounded-md">
+                      <p className="text-sm font-medium">Your share link:</p>
+                      <p className="text-xs break-all">{shareLink}</p>
+                    </div>
+                  )}
                 </div>
               </TabsContent>
               <TabsContent value="preview" className="mt-6">
@@ -175,10 +261,19 @@ const Create = () => {
             <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
               <h2 className="text-xl font-semibold mb-4 text-foreground">Edit Details</h2>
               <SocialCardForm onUpdate={handleDataUpdate} initialData={cardData} />
-              <div className="mt-6">
-                <Button onClick={handleSaveCard} disabled={isSaving} className="w-full">
+              <div className="mt-6 flex flex-col gap-3">
+                <Button onClick={handleSaveCard} disabled={isSaving}>
                   {isSaving ? "Saving..." : "Save Card"}
                 </Button>
+                <Button onClick={handleGenerateShareLink} variant="outline" disabled={isGeneratingShareLink}>
+                  {isGeneratingShareLink ? "Generating..." : "Generate Share Link"}
+                </Button>
+                {shareLink && (
+                  <div className="mt-2 p-3 bg-muted rounded-md">
+                    <p className="text-sm font-medium">Your share link:</p>
+                    <p className="text-xs break-all">{shareLink}</p>
+                  </div>
+                )}
               </div>
             </div>
             <div className="bg-card p-6 rounded-lg shadow-sm border border-border">

@@ -66,6 +66,7 @@ const AppRoutes = () => {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy" element={<Privacy />} />
+        <Route path="/share/:id" element={<Templates />} /> {/* New route for sharing */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
