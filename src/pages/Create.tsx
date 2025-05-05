@@ -48,13 +48,6 @@ const Create = () => {
     }
   }, [user]);
 
-  // Redirect to login if not authenticated after loading
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
-      navigate("/login");
-    }
-  }, [isLoading, isAuthenticated, navigate]);
-
   const handleDataUpdate = (data: SocialCardData) => {
     setCardData(data);
   };
@@ -109,6 +102,9 @@ const Create = () => {
         title: "Card saved!",
         description: "Your card has been saved successfully.",
       });
+      
+      // Navigate to dashboard after successful save
+      navigate('/dashboard');
     } catch (error) {
       console.error('Error saving card:', error);
       toast({
@@ -178,7 +174,7 @@ const Create = () => {
               <h2 className="text-xl font-semibold mb-4 text-foreground">Edit Details</h2>
               <SocialCardForm onUpdate={handleDataUpdate} initialData={cardData} />
               <div className="mt-6">
-                <Button onClick={handleSaveCard} disabled={isSaving}>
+                <Button onClick={handleSaveCard} disabled={isSaving} className="w-full">
                   {isSaving ? "Saving..." : "Save Card"}
                 </Button>
               </div>
