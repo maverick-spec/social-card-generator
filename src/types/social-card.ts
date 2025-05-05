@@ -6,6 +6,7 @@ export interface SocialCardData {
   email?: string;
   linkedin?: string;
   github?: string;
+  twitter?: string;
   portfolio?: string;
   photoUrl: string;
   phone?: string;

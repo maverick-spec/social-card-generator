@@ -19,6 +19,7 @@ const defaultCardData: SocialCardData = {
   title: "",
   phone: "",
   email: "",
+  twitter: "",
   linkedin: "",
   github: "",
   portfolio: "",
@@ -84,6 +85,7 @@ const Create = () => {
           email: cardData.email,
           phone: cardData.phone,
           github_url: cardData.github,
+          twitter_url: cardData.twitter,  // Add Twitter URL
           linkedin_url: cardData.linkedin,
           website: cardData.portfolio,  // Map portfolio to website
           photo_url: cardData.photoUrl,
@@ -103,8 +105,8 @@ const Create = () => {
         description: "Your card has been saved successfully.",
       });
       
-      // Navigate to dashboard after successful save
-      navigate('/dashboard');
+      // Navigate to saved cards page after successful save
+      navigate('/saved-cards');
     } catch (error) {
       console.error('Error saving card:', error);
       toast({

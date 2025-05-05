@@ -6,7 +6,7 @@ import { Footer as CustomFooter } from "@/components/ui/footer";
 export function Footer() {
   return (
     <CustomFooter
-      logo={<span className="text-xl font-bold">NexCard</span>}
+      logo={<span className="text-xl font-bold"><span className="text-green-500">Nex</span>Card</span>}
       brandName="NexCard"
       socialLinks={[
         {

@@ -19,6 +19,7 @@ import Contact from "./pages/Contact";
 import Privacy from "./pages/Privacy";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import SavedCards from "./pages/SavedCards";
 
 // Add popup provider
 import { PopupProvider } from "./components/InspirationPopup";
@@ -53,6 +54,11 @@ const AppRoutes = () => {
         <Route path="/dashboard" element={
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/saved-cards" element={
+          <ProtectedRoute>
+            <SavedCards />
           </ProtectedRoute>
         } />
         <Route path="/product" element={<Product />} />

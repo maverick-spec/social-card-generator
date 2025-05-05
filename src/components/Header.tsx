@@ -1,7 +1,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown, LogIn, User } from "lucide-react";
+import { Menu, X, ChevronDown, LogIn, User, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
@@ -38,7 +38,7 @@ export function Header() {
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         {/* Brand Name instead of Logo */}
         <Link to="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold">NexCard</span>
+          <span className="text-xl font-bold"><span className="text-green-500">Nex</span>Card</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -81,6 +81,14 @@ export function Header() {
           <Link to="/templates" className={cn("nav-link", isActive("/templates") && "active")}>
             Templates
           </Link>
+          
+          {isAuthenticated && (
+            <>
+              <Link to="/saved-cards" className={cn("nav-link flex items-center gap-1", isActive("/saved-cards") && "active")}>
+                <CreditCard className="w-4 h-4" /> My Cards
+              </Link>
+            </>
+          )}
         </nav>
 
         {/* Actions */}
@@ -163,6 +171,16 @@ export function Header() {
           >
             Templates
           </Link>
+          
+          {isAuthenticated && (
+            <Link 
+              to="/saved-cards" 
+              className={cn("py-2 flex items-center gap-2", isActive("/saved-cards") && "text-primary font-medium")}
+              onClick={() => setIsOpen(false)}
+            >
+              <CreditCard className="w-4 h-4" /> My Cards
+            </Link>
+          )}
           
           {!isAuthenticated && (
             <Button asChild variant="destructive" className="w-full mt-2">

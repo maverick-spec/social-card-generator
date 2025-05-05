@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Upload, Github, Linkedin, Globe, Mail as MailIcon } from "lucide-react";
+import { Upload, Github, Linkedin, Globe, Mail as MailIcon, Twitter } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,6 +25,7 @@ const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   linkedin: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
   github: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
+  twitter: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
   portfolio: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
   about: z.string().min(10, "About should be at least 10 characters").optional().or(z.literal("")),
   interests: z.string().min(10, "Interests should be at least 10 characters").optional().or(z.literal("")),
@@ -53,6 +54,7 @@ export function SocialCardForm({ onUpdate, initialData = {} }: SocialCardFormPro
       email: initialData.email || "",
       linkedin: initialData.linkedin || "",
       github: initialData.github || "",
+      twitter: initialData.twitter || "",
       portfolio: initialData.portfolio || "",
       about: initialData.about || "",
       interests: initialData.interests || "",
@@ -225,6 +227,30 @@ export function SocialCardForm({ onUpdate, initialData = {} }: SocialCardFormPro
               <FormControl>
                 <Input 
                   placeholder="laura@example.com" 
+                  {...field} 
+                  onChange={(e) => {
+                    field.onChange(e);
+                    handleFieldChange();
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {/* Twitter - NEW FIELD */}
+        <FormField
+          control={form.control}
+          name="twitter"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="flex items-center gap-1">
+                <Twitter size={16} /> Twitter URL
+              </FormLabel>
+              <FormControl>
+                <Input 
+                  placeholder="https://twitter.com/laurasmith" 
                   {...field} 
                   onChange={(e) => {
                     field.onChange(e);
