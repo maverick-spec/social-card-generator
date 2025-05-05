@@ -61,26 +61,24 @@ const Create = () => {
         return;
       }
 
-      // In a real app with Supabase integration, save to the database
+      // Insert into the new cards table
       const { error } = await supabase
         .from('cards')
-        .insert([
-          {
-            user_id: user.id,
-            name: cardData.name,
-            title: cardData.title,
-            email: cardData.email,
-            phone: cardData.phone,
-            github_url: cardData.github,
-            linkedin_url: cardData.linkedin,
-            website: cardData.website,
-            photo_url: cardData.photoUrl,
-            about: cardData.about,
-            interests: cardData.interests,
-            gradient: cardData.gradient,
-            template_id: templateId
-          }
-        ]);
+        .insert({
+          user_id: user.id,
+          name: cardData.name || "",
+          title: cardData.title,
+          email: cardData.email,
+          phone: cardData.phone,
+          github_url: cardData.github,
+          linkedin_url: cardData.linkedin,
+          website: cardData.website,
+          photo_url: cardData.photoUrl,
+          about: cardData.about,
+          interests: cardData.interests,
+          gradient: cardData.gradient,
+          template_id: templateId
+        });
       
       if (error) throw error;
       

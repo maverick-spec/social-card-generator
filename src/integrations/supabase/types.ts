@@ -9,6 +9,63 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      cards: {
+        Row: {
+          about: string | null
+          created_at: string
+          email: string | null
+          github_url: string | null
+          gradient: string | null
+          id: string
+          interests: string | null
+          linkedin_url: string | null
+          name: string
+          phone: string | null
+          photo_url: string | null
+          template_id: string
+          title: string | null
+          updated_at: string
+          user_id: string
+          website: string | null
+        }
+        Insert: {
+          about?: string | null
+          created_at?: string
+          email?: string | null
+          github_url?: string | null
+          gradient?: string | null
+          id?: string
+          interests?: string | null
+          linkedin_url?: string | null
+          name: string
+          phone?: string | null
+          photo_url?: string | null
+          template_id: string
+          title?: string | null
+          updated_at?: string
+          user_id: string
+          website?: string | null
+        }
+        Update: {
+          about?: string | null
+          created_at?: string
+          email?: string | null
+          github_url?: string | null
+          gradient?: string | null
+          id?: string
+          interests?: string | null
+          linkedin_url?: string | null
+          name?: string
+          phone?: string | null
+          photo_url?: string | null
+          template_id?: string
+          title?: string | null
+          updated_at?: string
+          user_id?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
       users: {
         Row: {
           created_at: string
