@@ -2,6 +2,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth as useClerkAuth, useUser, useClerk } from "@clerk/clerk-react";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -24,9 +25,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUser();
   const { signOut } = useClerk();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authError, setAuthError] = useState<Error | null>(null);
 
   useEffect(() => {
     setIsAuthenticated(!!isSignedIn);
+    
+    // Reset any authentication errors when auth state changes
+    if (isSignedIn) {
+      setAuthError(null);
+    }
   }, [isSignedIn]);
 
   // Sync user data from Clerk to Supabase when the user signs in
@@ -50,11 +57,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             
           if (error) {
             console.error('Error syncing user data with Supabase:', error);
+            setAuthError(new Error(error.message));
           } else {
             console.log('User data synced with Supabase');
           }
         } catch (error) {
-          console.error('Error syncing user data with Supabase:', error);
+          const err = error as Error;
+          console.error('Error syncing user data with Supabase:', err);
+          setAuthError(err);
+          
+          toast({
+            title: "User Sync Error",
+            description: "There was an issue syncing your profile. Some features may be limited.",
+            variant: "destructive",
+            duration: 5000,
+          });
         }
       }
     };
@@ -63,7 +80,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [isSignedIn, user, userId]);
 
   const logout = async () => {
-    await signOut();
+    try {
+      await signOut();
+    } catch (error) {
+      console.error("Error signing out:", error);
+      toast({
+        title: "Sign Out Error",
+        description: "There was an issue signing you out. Please try again.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    }
   };
 
   return (

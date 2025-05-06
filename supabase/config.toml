@@ -1,1 +1,8 @@
+
+# This is your Supabase project configuration
+
 project_id = "zzbzcfrklspkhrfgkmcw"
+
+# Set these when deploying to production
+# site_url = "https://nex-card-steel.vercel.app"
+# api.url = "https://zzbzcfrklspkhrfgkmcw.supabase.co"

@@ -5,8 +5,29 @@ import { SignIn } from "@clerk/clerk-react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { LogIn, Mail, Lock } from "lucide-react";
+import { useState, useEffect } from "react";
+import { toast } from "@/hooks/use-toast";
 
 const Login = () => {
+  const [clerkError, setClerkError] = useState<string | null>(null);
+
+  // Handle potential clerk errors
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const error = urlParams.get('error');
+    const errorDescription = urlParams.get('error_description');
+    
+    if (error) {
+      setClerkError(errorDescription || error);
+      toast({
+        title: "Authentication Error",
+        description: errorDescription || "An error occurred during authentication. Please try again.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    }
+  }, []);
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-background/90 relative">
       {/* Background Pattern */}
@@ -62,12 +83,21 @@ const Login = () => {
                 </div>
               </div>
             </div>
+
+            {clerkError && (
+              <div className="bg-destructive/10 border border-destructive text-destructive p-4 rounded-md mt-4">
+                <p className="font-medium">Authentication Error</p>
+                <p className="text-sm">{clerkError}</p>
+              </div>
+            )}
           </div>
           
           {/* Right Side - Sign In Component */}
           <Card className="shadow-xl border-border/50">
             <CardContent className="pt-6">
-              <SignIn afterSignInUrl="/dashboard" />
+              <SignIn 
+                afterSignInUrl="/dashboard" 
+              />
             </CardContent>
           </Card>
         </motion.div>
