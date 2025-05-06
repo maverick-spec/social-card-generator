@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -137,7 +138,11 @@ const Create = () => {
       }
       
       const cardId = uuidv4();
-      const shareableUrl = `${window.location.origin}/share/${cardId}`;
+      
+      // Get the deployment URL or fall back to localhost
+      // This ensures the share link works on Vercel deployment
+      const baseUrl = window.location.origin || 'https://nex-card-steel.vercel.app';
+      const shareableUrl = `${baseUrl}/share/${cardId}`;
       
       // First check if user is authenticated for saving purposes
       if (isAuthenticated && user?.id) {
@@ -163,6 +168,7 @@ const Create = () => {
           });
           
         if (error) {
+          console.error('Database error when saving card for share:', error);
           throw error;
         }
       } else {
@@ -176,12 +182,21 @@ const Create = () => {
       // Set the share link state
       setShareLink(shareableUrl);
       
-      // Copy to clipboard 
-      await navigator.clipboard.writeText(shareableUrl);
-      toast({
-        title: "Share link generated!",
-        description: "Link has been copied to clipboard.",
-      });
+      try {
+        // Copy to clipboard 
+        await navigator.clipboard.writeText(shareableUrl);
+        toast({
+          title: "Share link generated!",
+          description: "Link has been copied to clipboard.",
+        });
+      } catch (clipboardError) {
+        // Fallback if clipboard API fails
+        console.error('Could not copy to clipboard:', clipboardError);
+        toast({
+          title: "Share link generated!",
+          description: "Link is displayed below. Copy it manually to share.",
+        });
+      }
       
     } catch (error) {
       console.error('Error generating share link:', error);
@@ -235,10 +250,10 @@ const Create = () => {
               <TabsContent value="edit" className="mt-6">
                 <SocialCardForm onUpdate={handleDataUpdate} initialData={cardData} />
                 <div className="mt-6 flex flex-col gap-3">
-                  <Button onClick={handleSaveCard} disabled={isSaving}>
+                  <Button onClick={handleSaveCard} disabled={isSaving} className="w-full">
                     {isSaving ? "Saving..." : "Save Card"}
                   </Button>
-                  <Button onClick={handleGenerateShareLink} variant="outline" disabled={isGeneratingShareLink}>
+                  <Button onClick={handleGenerateShareLink} variant="outline" disabled={isGeneratingShareLink} className="w-full">
                     {isGeneratingShareLink ? "Generating..." : "Generate Share Link"}
                   </Button>
                   {shareLink && (
@@ -261,10 +276,10 @@ const Create = () => {
               <h2 className="text-xl font-semibold mb-4 text-foreground">Edit Details</h2>
               <SocialCardForm onUpdate={handleDataUpdate} initialData={cardData} />
               <div className="mt-6 flex flex-col gap-3">
-                <Button onClick={handleSaveCard} disabled={isSaving}>
+                <Button onClick={handleSaveCard} disabled={isSaving} className="w-full">
                   {isSaving ? "Saving..." : "Save Card"}
                 </Button>
-                <Button onClick={handleGenerateShareLink} variant="outline" disabled={isGeneratingShareLink}>
+                <Button onClick={handleGenerateShareLink} variant="outline" disabled={isGeneratingShareLink} className="w-full">
                   {isGeneratingShareLink ? "Generating..." : "Generate Share Link"}
                 </Button>
                 {shareLink && (

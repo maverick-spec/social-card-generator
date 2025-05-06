@@ -1,6 +1,5 @@
 
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
@@ -66,7 +65,7 @@ const AppRoutes = () => {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/privacy" element={<Privacy />} />
-        <Route path="/share/:id" element={<Templates />} /> {/* New route for sharing */}
+        <Route path="/share/:id" element={<Templates />} /> {/* Route for sharing */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
@@ -80,8 +79,8 @@ const App = () => (
         <BrowserRouter>
           <PopupProvider>
             <TooltipProvider>
+              {/* Only include one Toaster component */}
               <Toaster />
-              <Sonner />
               <AppRoutes />
             </TooltipProvider>
           </PopupProvider>
