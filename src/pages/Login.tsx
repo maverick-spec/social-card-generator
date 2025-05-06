@@ -1,6 +1,5 @@
 
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { SignIn } from "@clerk/clerk-react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
@@ -26,6 +25,10 @@ const Login = () => {
         duration: 5000,
       });
     }
+    
+    // Log authentication attempt for debugging
+    console.log("Login component mounted, checking for Clerk key:", 
+      !!window.location.href, "Params:", urlParams.toString());
   }, []);
 
   return (
@@ -97,6 +100,8 @@ const Login = () => {
             <CardContent className="pt-6">
               <SignIn 
                 afterSignInUrl="/dashboard" 
+                routing="path"
+                path="/login"
               />
             </CardContent>
           </Card>

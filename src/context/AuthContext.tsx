@@ -27,6 +27,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authError, setAuthError] = useState<Error | null>(null);
 
+  // Debug auth state
+  useEffect(() => {
+    console.log("Clerk auth state changed:", { 
+      userId, 
+      isSignedIn, 
+      isLoaded,
+      userObject: user ? "Present" : "Null" 
+    });
+  }, [userId, isSignedIn, isLoaded, user]);
+
   useEffect(() => {
     setIsAuthenticated(!!isSignedIn);
     
@@ -41,6 +51,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const syncUserToSupabase = async () => {
       if (isSignedIn && user) {
         try {
+          console.log("Attempting to sync user with Supabase:", userId);
+          
           const { data, error } = await supabase
             .from('users')
             .upsert({
@@ -58,6 +70,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           if (error) {
             console.error('Error syncing user data with Supabase:', error);
             setAuthError(new Error(error.message));
+            
+            // Only show toast for DB errors, not auth errors
+            toast({
+              title: "User Sync Warning",
+              description: "Database sync issue. Some features may be limited.",
+              variant: "destructive", 
+              duration: 5000,
+            });
           } else {
             console.log('User data synced with Supabase');
           }
@@ -82,6 +102,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = async () => {
     try {
       await signOut();
+      toast({
+        title: "Signed Out",
+        description: "You have been successfully signed out.",
+        variant: "default",
+      });
     } catch (error) {
       console.error("Error signing out:", error);
       toast({
